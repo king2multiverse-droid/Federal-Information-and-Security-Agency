@@ -150,6 +150,22 @@ function showMainMenu() {
 }
 
 /* =========================
+  FEDERAL AGENT INFORMATION
+  ========================== */
+  function showfederalagentinformation() {
+    clearscreen();
+    mode = "AGNT_INFO";
+    print("FEDERAL AGENT INFORMATION");
+    print("=========================");
+    print("");
+    print("DEVELOPER [A0 ACCESS]"):
+    print("Federal Section Officer - "KingMultiverse""):
+    print(""):
+    print("DIRECTORATE / HIGH COMMAND [A1 ACCESS]"):
+    print("ACT. DIRECTOR-GENERAL "HTC_MARSHAL""):
+    print("");
+    print(" TO BE ADDED "):
+/* =========================
    FEDERATION OPERATIONS
 ========================= */
 function showFederationOperations() {
@@ -376,12 +392,6 @@ document.addEventListener("keydown", e => {
 const token = new URLSearchParams(location.search).get("token");
 
   console.log("TOKEN:", token);
-fetch(
-  "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec?token=" +
-  encodeURIComponent(token)
-)
-  .then(r => r.json())
-  .then(res => res.ok ? unlockTerminal() : denyAccess());
 </script>
 
   <script>
@@ -409,6 +419,7 @@ fetch(SCRIPT_URL)
 </script>
 </body>
 </html>
+
 
 
 
