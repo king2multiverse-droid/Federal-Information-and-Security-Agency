@@ -5,7 +5,6 @@
 <title>FISA Secured Terminal</title>
 
 <style>
-/* Logo overlay */
 #logo-container {
   position: absolute;
   top: 20px;
@@ -83,7 +82,6 @@ let audioStarted = false;
 
 function startAmbientAudio() {
   if (audioStarted) return;
-
   audio.volume = 0;
   audio.play().then(() => {
     let level = 0;
@@ -93,7 +91,6 @@ function startAmbientAudio() {
       if (level >= 0.18) clearInterval(fadeIn);
     }, 200);
   }).catch(() => {});
-
   audioStarted = true;
 }
 
@@ -183,20 +180,21 @@ Identities, methodologies, and internal findings are classified and exempt from
 civilian disclosure under applicable federal secrecy provisions.
 `);
       print("-----------------------------------");
-      print("");
       print("AUTHORIZED ACTIONS:");
-      print("");
       print("1] CONDUCT A RECORDS REQUEST");
       print("2] CONDUCT A STANDARD BACKGROUND ANALYSIS");
       print("3] CONDUCT A COMPREHENSIVE SCREENING ASSESSMENT");
       print("");
-      print("SELECT OPTION OR TYPE 'MENU' TO RETURN.");
+      print("TYPE 'MENU' TO RETURN.");
       break;
 
     case "B":
       print("ENFORCEMENT AND SECURITY DIRECTORATE");
       print("-----------------------------------");
-            print(`
+      print(`
+ENFORCEMENT AND SECURITY DIRECTORATE
+-----------------------------------
+
 MANDATE:
 The Enforcement and Security Directorate (ESD) serves as the primary operational
 and disciplinary authority within the Federal Government.
@@ -212,7 +210,10 @@ the fulfillment of enforcement duties. Specialized training in interrogation,
 containment, and enforcement methodologies is conducted in cooperation with
 [REDACTED] and [REDACTED], in accordance with classified training protocols.
 `);
+      print("-----------------------------------");
       print("STATUS: OPERATIONAL");
+      print("");
+      print("TYPE 'MENU' TO RETURN.");
       break;
 
     case "C":
@@ -236,7 +237,10 @@ conducted in coordination with [REDACTED] and [REDACTED].
 
 All participation is subject to continuous review.
 `);
+      print("-----------------------------------");
       print("STATUS: OPERATIONAL");
+      print("");
+      print("TYPE 'MENU' TO RETURN.");
       break;
 
     case "D":
@@ -253,13 +257,11 @@ ACCESS CONTROL:
 - UNKNOWN
 `);
       print("-----------------------------------");
-      print("STATUS: UNKNOWN - INACTIVE SINCE 1946");
+      print("ACCESS DENIED");
       print("CLEARANCE LEVEL INSUFFICIENT");
-      print("REQUIRED: A1+");
+      print("");
+      print("TYPE 'MENU' TO RETURN.");
       break;
-
-    default:
-      print("INVALID SELECTION");
   }
 }
 
@@ -272,15 +274,7 @@ print(`
 ************************************************************
 
 THIS TERMINAL IS THE PROPERTY OF A FEDERAL AUTHORITY.
-
-UNAUTHORIZED ACCESS OR USE IS STRICTLY PROHIBITED.
-
-ALL ACTIVITIES PERFORMED ON THIS SYSTEM ARE:
-- MONITORED
-- RECORDED
-- SUBJECT TO REVIEW BY SECURITY OFFICERS
-
-ACCESS IS RESTRICTED TO PERSONNEL WITH VALID CLEARANCE.
+UNAUTHORIZED ACCESS IS STRICTLY PROHIBITED.
 
 ENTER AUTHORIZATION CODE TO CONTINUE.
 `);
@@ -299,12 +293,10 @@ document.addEventListener("keydown", e => {
       if (cmd === ACCESS_CODE) {
         clearScreen();
         print("ACCESS GRANTED");
-        print("SECURITY SYSTEM ONLINE");
         loggedIn = true;
         showMainMenu();
       } else {
         print("ACCESS DENIED");
-        print("COMMISSARIAT NOTIFIED");
       }
     }
     else {
@@ -315,58 +307,21 @@ document.addEventListener("keydown", e => {
       else if (mode === "MAIN_MENU" && cmd === "2") {
         showFederationOperations();
       }
+      else if (mode === "MAIN_MENU" && /^[1-7]$/.test(cmd)) {
+        clearScreen();
+        print("ACCESSING SECTOR " + cmd + "...");
+        print("");
+        print("SECTOR CONTENT NOT YET INITIALIZED");
+        print("");
+        print("TYPE 'MENU' TO RETURN.");
+      }
       else if (mode === "FED_OPS" && /^[A-D]$/.test(cmd)) {
         showFedOpsSection(cmd);
       }
       else if (mode === "IAD_MENU" && /^[1-3]$/.test(cmd)) {
         clearScreen();
-        print("PROCESSING AUTHORIZED REQUEST...");
+        print("REQUEST LOGGED.");
         print("");
-
-        if (cmd === "1") {
-          print("RECORDS REQUEST AUTHORIZATION");
-          print(`
-LEGAL BASIS:
-Controlled retrieval of federal records under statutory authority.
-
-SCOPE:
-Administrative, disciplinary, and clearance adjudication records.
-
-LIMITATIONS:
-Unauthorized disclosure constitutes a federal offense.
-`);
-        }
-
-        if (cmd === "2") {
-          print("STANDARD BACKGROUND ANALYSIS");
-          print(`
-LEGAL BASIS:
-Formal vetting procedure to determine eligibility for federal trust.
-
-SCOPE:
-Identity, criminal, and affiliation verification.
-
-NOTICE:
-Findings subject to adjudicative review.
-`);
-        }
-
-        if (cmd === "3") {
-          print("COMPREHENSIVE SCREENING ASSESSMENT");
-          print(`
-LEGAL BASIS:
-Enhanced evaluation for high-sensitivity assignments.
-
-SCOPE:
-Psychological, financial, and counterintelligence risk assessment.
-
-CLASSIFICATION:
-All findings are classified and exempt from civilian disclosure.
-`);
-        }
-
-        print("");
-        print("ACTION LOGGED.");
         print("TYPE 'MENU' TO RETURN.");
       }
       else {
@@ -390,10 +345,3 @@ All findings are classified and exempt from civilian disclosure.
 
 </body>
 </html>
-
-
-
-
-
-
-
