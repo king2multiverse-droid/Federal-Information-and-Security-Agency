@@ -2,233 +2,59 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FISA Secured Terminal</title>
-
+<title>Federal Information & Security Agency</title>
 <style>
-#logo-container {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  pointer-events: none;
-}
-
-#logo {
-  max-width: 300px;
-  max-height: 250px;
-  width: auto;
-  height: auto;
-}
-
-body {
-  margin: 0;
-  background: black;
-  font-family: "Courier New", monospace;
-}
-
-#terminal {
-  color: #885ab8;
-  padding: 20px;
-  font-size: 16px;
-  opacity: 0.95;
-  filter: blur(0.2px);
-  text-shadow:
-    0 0 1px rgba(255,204,136,0.4),
-    0 0 4px rgba(255,204,136,0.25),
-    0 0 10px rgba(255,204,136,0.15);
-  animation: jitter 0.15s infinite alternate;
-}
-
-#terminal::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.2),
-    rgba(0,0,0,0.2) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-}
-
-@keyframes jitter {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(0.3px); }
-}
+  body {
+    background: black;
+    color: #00ff88;
+    font-family: monospace;
+    margin: 0;
+    padding: 10px;
+  }
+  #terminal {
+    white-space: pre-wrap;
+  }
+  #input {
+    display: inline;
+  }
 </style>
 </head>
-
 <body>
 
-<div id="logo-container">
-  <img src="FISA.png" alt="FISA Logo" id="logo">
-</div>
-
-<div id="terminal">
-  <pre id="output"></pre>
-  <span>&gt; </span><span id="input"></span>
-</div>
-
-<audio id="ambientAudio" loop preload="auto">
-  <source src="LEMMiNO - Blackout (BGM).mp3" type="audio/mpeg">
-</audio>
-
-<script>
-const API_URL = "https://script.google.com/macros/s/DEPLOYMENT_ID/exec";
-
-let terminalUnlocked = false;
-let loggedIn = false;
-</script>
+<div id="terminal"></div>
+<span id="prompt">&gt; </span><span id="input"></span>
 
 <script>
 /* =========================
-   CORE STATE
+   CONFIG
+========================= */
+const API_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
+
+/* =========================
+   STATE
 ========================= */
 let buffer = "";
 let loggedIn = false;
-let terminalUnlocked = false;
-let mode = "LOGIN";
+let terminalUnlocked = true; // allow token typing only
+
+const terminal = document.getElementById("terminal");
+const input = document.getElementById("input");
 
 /* =========================
-   ELEMENTS
-========================= */
-const output = document.getElementById("output");
-const input  = document.getElementById("input");
-const audio  = document.getElementById("ambientAudio");
-
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec";
-
-/* =========================
-   AUDIO
-========================= */
-let audioStarted = false;
-
-function startAmbientAudio() {
-  if (audioStarted) return;
-  audio.volume = 0;
-  audio.play().then(() => {
-    let level = 0;
-    const fadeIn = setInterval(() => {
-      level += 0.01;
-      audio.volume = Math.min(level, 0.18);
-      if (level >= 0.18) clearInterval(fadeIn);
-    }, 200);
-  }).catch(() => {});
-  audioStarted = true;
-}
-
-/* =========================
-   TERMINAL OUTPUT
+   TERMINAL UTIL
 ========================= */
 function print(text = "") {
-  output.textContent += text + "\n";
-  output.scrollTop = output.scrollHeight;
+  terminal.textContent += text + "\n";
+  window.scrollTo(0, document.body.scrollHeight);
 }
 
 function clearScreen() {
-  output.textContent = "";
+  terminal.textContent = "";
 }
 
 /* =========================
-   MAIN MENU
+   ACCESS CONTROL
 ========================= */
-function showMainMenu() {
-  mode = "MAIN_MENU";
-  print("");
-  print("SECTOR REVIEW TERMINAL");
-  print("SELECT SECTOR:");
-  print("");
-  print("1] FEDERAL DISCIPLINARY COUNCIL");
-  print("2] FEDERATION OPERATIONS");
-  print("3] PROJECT 'IRON'");
-  print("4] FEDERAL AGENT INFORMATION");
-  print("5] JOINT RECORDS TERMINAL");
-  print("6] GOVERNMENT RECORDS");
-  print("7] THE EYE");
-  print("");
-  print("ENTER SECTOR NUMBER:");
-}
-
-/* =========================
-   FEDERAL DISCIPLINARY COUNCIL
-========================= */
-function showFederalDisciplinaryCouncil() {
-  clearScreen();
-  mode = "FEDERAL_DISCIPLINARY_COUNCIL";
-  print("FEDERAL DISCIPLINARY COMMITTEE");
-  print("=================");
-  print(`
-MANDATE: Includes 2 sections, FISA Disciplinary Commitee, and
-Government Security Division of Justice. Members are granted
-seats based on rank and actions conducted by individuals.
-`);
-}
-
-/* =========================
-   FEDERAL AGENT INFORMATION
-========================= */
-function showFederalAgentInformation() {
-  clearScreen();
-  mode = "AGENT_INFO";
-  print("FEDERAL AGENT INFORMATION");
-  print("=========================");
-  print("");
-  print("DEVELOPER [A0 ACCESS];");
-  print('Federal Section Officer - "KingMultiverse";');
-}
-
-/* =========================
-   FEDERATION OPERATIONS
-========================= */
-function showFederationOperations() {
-  clearScreen();
-  mode = "FED_OPS";
-  print("FEDERATION OPERATIONS");
-  print("----------------------");
-  print("");
-  print("A] INTEGRITY AND ASSURANCE DIRECTORATE");
-  print("B] ENFORCEMENT AND SECURITY DIRECTORATE");
-  print("C] TRAINING AND EDUCATION DIRECTORATE");
-  print("D] INTERNAL SURVEILLANCE AND COMMUNICATIONS CHANNEL");
-  print("");
-  print("SELECT OPTION OR TYPE 'MENU' TO RETURN:");
-}
-
-function showFedOpsSection(letter) {
-  clearScreen();
-  print("ACCESSING DIRECTORATE...");
-  print("");
-  print("STATUS: OPERATIONAL");
-  print("");
-  print("TYPE 'MENU' TO RETURN.");
-}
-
-/* =========================
-   INITIAL NOTICE
-========================= */
-print(`
-************************************************************
-*                  FEDERAL SECURITY NOTICE                 *
-************************************************************
-
-THIS TERMINAL IS THE PROPERTY OF A FEDERAL AUTHORITY.
-
-UNAUTHORIZED ACCESS OR USE IS STRICTLY PROHIBITED.
-
-ALL ACTIVITIES PERFORMED ON THIS SYSTEM ARE:
-- MONITORED
-- RECORDED
-- SUBJECT TO REVIEW BY SECURITY OFFICERS
-
-ACCESS IS RESTRICTED TO PERSONNEL WITH VALID CLEARANCE.
-
-ENTER AUTHORIZATION CODE TO CONTINUE.
-`);
-
 function denyAccess(msg) {
   clearScreen();
   print("************************************************************");
@@ -238,79 +64,94 @@ function denyAccess(msg) {
   print(msg);
   print("");
   print("SESSION TERMINATED");
+  terminalUnlocked = false;
 }
-/* =========================
-   AUTH RESULT HANDLING
-========================= */
-const authResult = new URLSearchParams(location.search).get("auth");
 
-if (authResult === "OK") {
-  loggedIn = true;
-  terminalUnlocked = true;
-  clearScreen();
-  print("SECURITY TOKEN VERIFIED");
-  print("WELCOME, FEDERAL AGENT.");
-  showMainMenu();
+/* =========================
+   INITIAL SCREEN
+========================= */
+clearScreen();
+print("************************************************************");
+print("*                  FEDERAL SECURITY NOTICE                 *");
+print("************************************************************");
+print("");
+print("THIS TERMINAL IS THE PROPERTY OF A FEDERAL AUTHORITY.");
+print("");
+print("ENTER AUTHORIZATION TOKEN TO CONTINUE.");
+print("");
+
+/* =========================
+   TOKEN VALIDATION
+========================= */
+function validateEnteredToken(token) {
+  print("VALIDATING TOKEN...");
+
+  fetch(`${API_URL}?token=${encodeURIComponent(token)}`)
+    .then(r => r.json())
+    .then(res => {
+      if (res.ok) {
+        loggedIn = true;
+
+        clearScreen();
+        print("SECURITY HANDSHAKE COMPLETE");
+        print("WELCOME, AGENT " + res.codename);
+        print("");
+        showMainMenu();
+      } else {
+        print("SECURITY VALIDATION FAILED");
+      }
+    })
+    .catch(() => {
+      print("SECURITY LINK FAILURE");
+    });
+}
+
+/* =========================
+   MAIN MENU
+========================= */
+function showMainMenu() {
+  print("=== MAIN MENU ===");
+  print("1. Federal Disciplinary Council");
+  print("2. Federation Operations");
+  print("3. Restricted Sector");
+  print("");
+  print("TYPE OPTION NUMBER OR 'MENU'");
 }
 
 /* =========================
    INPUT HANDLER
 ========================= */
 document.addEventListener("keydown", e => {
-if (!terminalUnlocked) return;
-document.addEventListener("keydown", e => {
-  startAmbientAudio();
+  if (!terminalUnlocked) return;
 
   if (e.key === "Enter") {
-    const cmd = buffer.trim().toUpperCase();
     print("> " + buffer);
-
-    buffer = "";
-    input.textContent = "";
+    const cmd = buffer.trim().toUpperCase();
 
     if (!loggedIn) {
-      window.location.href =
-        SCRIPT_URL + "?token=" + encodeURIComponent(cmd);
-      return;
-    }
-
-    if (cmd === "MENU") {
-      clearScreen();
-      showMainMenu();
-      return;
-    }
-
-    if (mode === "MAIN_MENU") {
-      switch (cmd) {
-        case "1": showFederalDisciplinaryCouncil(); return;
-        case "2": showFederationOperations(); return;
-        case "4": showFederalAgentInformation(); return;
-        default:
-          print("UNRECOGNIZED SECTOR");
-          return;
+      validateEnteredToken(cmd);
+    } else {
+      if (cmd === "MENU") {
+        clearScreen();
+        showMainMenu();
+      } else {
+        print("UNRECOGNIZED COMMAND");
       }
     }
 
-    if (mode === "FED_OPS" && /^[A-D]$/.test(cmd)) {
-      showFedOpsSection(cmd);
-      return;
-    }
-
-    print("UNRECOGNIZED COMMAND");
+    buffer = "";
+    input.textContent = "";
     return;
   }
 
   if (e.key === "Backspace") {
     buffer = buffer.slice(0, -1);
-    input.textContent = buffer;
-    return;
+  } else if (e.key.length === 1) {
+    buffer += e.key.toUpperCase();
   }
 
-  if (e.key.length === 1) {
-    buffer += e.key.toUpperCase();
-    input.textContent = buffer;
-  }
-})};
+  input.textContent = buffer;
+});
 </script>
 
 <script>
@@ -346,8 +187,5 @@ window.addEventListener("load", () => {
     });
 });
 </script>
-
 </body>
 </html>
-
-
