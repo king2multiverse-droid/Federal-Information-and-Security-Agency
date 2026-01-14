@@ -78,6 +78,7 @@ body {
 
 <script>
   let terminalUnlocked = false;
+  
   function unlockTerminal() {
   terminalUnlocked = true;
   clearScreen();
@@ -379,15 +380,22 @@ document.addEventListener("keydown", e => {
   <script>
 const token = new URLSearchParams(location.search).get("token");
 
-fetch("https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec?token=" + token)
+fetch("https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec?token=" + encodeURIComponent(token))
   .then(r => r.json())
   .then(res => res.ok ? unlockTerminal() : denyAccess());
 
     document.addEventListener("keydown", e => {
   startAmbientAudio();
+
+  if (!terminalUnlocked) {
+    return; // BLOCK ALL INPUT UNTIL TOKEN VALIDATED
+  }
+
+  if (e.key === "Enter") {
 </script>
 </body>
 </html>
+
 
 
 
