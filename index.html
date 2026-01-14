@@ -5,6 +5,17 @@
 <title>FISA Secured Terminal</title>
 
 <style>
+#logo-container {
+  text-align: center;      /* Center the logo */
+  margin-top: 30px;        /* Space from top */
+}
+
+#logo {
+  max-width: 200px;        /* Adjust size */
+  height: auto;
+  margin-bottom: 20px;     /* Space before terminal */
+}
+
 body {
   margin: 0;
   background: black;
@@ -46,14 +57,20 @@ body {
 </head>
 
 <body>
-<div id="terminal">
-  <pre id="output"></pre>
-  <span>&gt; </span><span id="input"></span>
-</div>
+  <div id="logo-container">
+    <img src="logo.png" alt="FISA Logo" id="logo">
+  </div>
 
-<audio id="ambientAudio" loop preload="auto">
-  <source src="LEMMiNO - Blackout (BGM).mp3" type="audio/mpeg">
-</audio>
+  <div id="terminal">
+    <pre id="output"></pre>
+    <span>&gt; </span><span id="input"></span>
+  </div>
+
+  <audio id="ambientAudio" loop preload="auto">
+    <source src="ambient_loop.mp3" type="audio/mpeg">
+  </audio>
+</body>
+
 
 <script>
 const audio = document.getElementById("ambientAudio");
@@ -302,4 +319,3 @@ document.addEventListener("keydown", e => {
 </script>
 </body>
 </html>
-
