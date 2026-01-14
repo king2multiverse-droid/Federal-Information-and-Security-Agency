@@ -268,9 +268,44 @@ function processCommand(cmd) {
 
   stutterPrint("UNRECOGNIZED COMMAND\n");
 }
+
+function handleMainMenu(cmd) {
+  switch (cmd) {
+    case "1":
+      stutterPrint("\nACCESSING FEDERATION COUNCIL...\n");
+      break;
+
+    case "2":
+      stutterPrint("\nACCESSING FEDERAL OPERATIONS...\n");
+      break;
+
+    case "3":
+      stutterPrint("\nACCESSING AGENT REGISTRY...\n");
+      break;
+
+    case "4":
+      stutterPrint("\nACCESSING MINISTERIAL OVERSIGHT...\n");
+      break;
+
+    case "5":
+      stutterPrint("\nACCESSING PROJECT 'IRON'...\n");
+      break;
+
+    case "6":
+      stutterPrint("\nACCESSING THE EYE...\n");
+      break;
+
+    default:
+      stutterPrint("INVALID SECTOR SELECTION\n");
+      return;
+  }
+
+  terminalState = "SECTOR";
+}
 </script>
 </body>
 </html>
+
 
 
 
