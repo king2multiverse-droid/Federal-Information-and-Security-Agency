@@ -77,6 +77,21 @@ body {
 </audio>
 
 <script>
+  function unlockTerminal() {
+  terminalUnlocked = true;
+  clearScreen();
+  print("SECURITY TOKEN VERIFIED, WELCOME FEDERAL AGENT.");
+  print("ACCESS GRANTED, DUTY AND VIGILANCE BEFORE ALL.");
+  print("");
+}
+
+function denyAccess() {
+  terminalUnlocked = false;
+  clearScreen();
+  print("SECURITY TOKEN INVALID, CEASE VIEWING CLASSIFIED MATERIAL");
+  print("ACCESS TERMINATED, COMMISSARIAT NOTIFIED.");
+}
+
 const audio = document.getElementById("ambientAudio");
 let audioStarted = false;
 
@@ -359,3 +374,4 @@ fetch("https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-r
 </script>
 </body>
 </html>
+
