@@ -7,17 +7,17 @@
 <style>
 /* Logo overlay */
 #logo-container {
-  position: absolute;     /* Take it out of normal flow */
-  top: 20px;              /* Distance from top of screen */
-  left: 50%;              /* Center horizontally */
-  transform: translateX(-50%); /* Perfect horizontal centering */
-  z-index: 10;            /* Ensure it sits above terminal text */
-  pointer-events: none;   /* So it doesn’t block typing in terminal */
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
 }
 
 #logo {
-  max-width: 300px;       /* Adjust size */
-  max-height: 250px;      /* Adjust vertical space */
+  max-width: 300px;
+  max-height: 250px;
   width: auto;
   height: auto;
 }
@@ -63,24 +63,19 @@ body {
 </head>
 
 <body>
-  <!-- Logo overlay -->
-  <div id="logo-container">
-    <img src="FISA.png" alt="FISA Logo" id="logo">
-  </div>
 
-  <!-- Terminal -->
-  <div id="terminal">
-    <pre id="output"></pre>
-    <span>&gt; </span><span id="input"></span>
-  </div>
+<div id="logo-container">
+  <img src="FISA.png" alt="FISA Logo" id="logo">
+</div>
 
-  <!-- Audio -->
-  <audio id="ambientAudio" loop preload="auto">
-    <source src="LEMMiNO - Blackout (BGM).mp3" type="audio/mpeg">
-  </audio>
-</body>
+<div id="terminal">
+  <pre id="output"></pre>
+  <span>&gt; </span><span id="input"></span>
+</div>
 
-
+<audio id="ambientAudio" loop preload="auto">
+  <source src="LEMMiNO - Blackout (BGM).mp3" type="audio/mpeg">
+</audio>
 
 <script>
 const audio = document.getElementById("ambientAudio");
@@ -109,7 +104,7 @@ const ACCESS_CODE = "FSS-1957";
 
 let buffer = "";
 let loggedIn = false;
-let mode = "LOGIN"; // LOGIN | MAIN_MENU | FED_OPS
+let mode = "LOGIN"; // LOGIN | MAIN_MENU | FED_OPS | IAD_MENU
 
 function print(text = "") {
   output.textContent += text + "\n";
@@ -169,66 +164,26 @@ function showFedOpsSection(letter) {
   switch (letter) {
 
     case "A":
+      mode = "IAD_MENU";
       print("INTEGRITY AND ASSURANCE DIRECTORATE");
-      print(`
-MANDATE:
-The Integrity and Assurance Directorate (IAD) is charged with the verification,
-assessment, and maintenance of personnel integrity across all federal bodies.
-
-RESPONSIBILITIES INCLUDE:
-- Background investigations across multiple clearance tiers
-- Maintenance of disciplinary records and enforcement logs
-- Oversight of compliance with federal statutes and internal directives
-
-ACCESS CONTROL:
-Personnel assigned to this directorate operate under Clearance Level 4 or higher.
-Identities, methodologies, and internal findings are classified and exempt from
-civilian disclosure under applicable federal secrecy provisions.
-`);
-      print("STATUS: OPERATIONAL");
+      print("-----------------------------------");
+      print("");
+      print("AUTHORIZED ACTIONS:");
+      print("");
+      print("1] CONDUCT A RECORDS REQUEST");
+      print("2] CONDUCT A STANDARD BACKGROUND ANALYSIS");
+      print("3] CONDUCT A COMPREHENSIVE SCREENING ASSESSMENT");
+      print("");
+      print("SELECT OPTION OR TYPE 'MENU' TO RETURN.");
       break;
 
     case "B":
       print("ENFORCEMENT AND SECURITY DIRECTORATE");
-      print(`
-MANDATE:
-The Enforcement and Security Directorate (ESD) serves as the primary operational
-and disciplinary authority within the Federal Government.
-
-RESPONSIBILITIES INCLUDE:
-- Execution of large-scale federal operations and investigations
-- Enforcement of internal regulations and ministerial oversight
-- Coordination of high-risk compliance and response actions
-
-AUTHORITY:
-Personnel assigned to ESD are granted expanded statutory powers necessary for
-the fulfillment of enforcement duties. Specialized training in interrogation,
-containment, and enforcement methodologies is conducted in cooperation with
-[REDACTED] and [REDACTED], in accordance with classified training protocols.
-`);
       print("STATUS: OPERATIONAL");
       break;
 
     case "C":
       print("TRAINING AND EDUCATION DIRECTORATE");
-      print(`
-MANDATE:
-The Training and Education Directorate (TED) oversees the recruitment,
-evaluation, and conditioning of federal personnel designated for operational
-service.
-
-NOTICE:
-Access to this directorate indicates provisional acceptance into a restricted
-federal training program. Selection follows an extensive screening and
-vetting process and does not constitute confirmation of permanent status.
-
-PROGRAM DETAILS:
-Accepted candidates undergo structured instruction in federal doctrine,
-operational conduct, and classified procedures. Training activities are
-conducted in coordination with [REDACTED] and [REDACTED].
-
-All participation is subject to continuous review.
-`);
       print("STATUS: OPERATIONAL");
       break;
 
@@ -241,9 +196,6 @@ All participation is subject to continuous review.
     default:
       print("INVALID SELECTION");
   }
-
-  print("");
-  print("TYPE 'MENU' TO RETURN.");
 }
 
 /* =========================
@@ -272,7 +224,7 @@ ENTER AUTHORIZATION CODE TO CONTINUE.
    INPUT HANDLER
 ========================= */
 document.addEventListener("keydown", e => {
-  startAmbientAudio(); // <-- ensure audio starts on first keypress
+  startAmbientAudio();
 
   if (e.key === "Enter") {
     print("> " + buffer);
@@ -298,16 +250,59 @@ document.addEventListener("keydown", e => {
       else if (mode === "MAIN_MENU" && cmd === "2") {
         showFederationOperations();
       }
-      else if (mode === "MAIN_MENU" && /^[1-7]$/.test(cmd)) {
-        clearScreen();
-        print("ACCESSING SECTOR " + cmd + "...");
-        print("");
-        print("SECTOR CONTENT NOT YET INITIALIZED");
-        print("");
-        print("TYPE 'MENU' TO RETURN.");
-      }
       else if (mode === "FED_OPS" && /^[A-D]$/.test(cmd)) {
         showFedOpsSection(cmd);
+      }
+      else if (mode === "IAD_MENU" && /^[1-3]$/.test(cmd)) {
+        clearScreen();
+        print("PROCESSING AUTHORIZED REQUEST...");
+        print("");
+
+        if (cmd === "1") {
+          print("RECORDS REQUEST AUTHORIZATION");
+          print(`
+LEGAL BASIS:
+Controlled retrieval of federal records under statutory authority.
+
+SCOPE:
+Administrative, disciplinary, and clearance adjudication records.
+
+LIMITATIONS:
+Unauthorized disclosure constitutes a federal offense.
+`);
+        }
+
+        if (cmd === "2") {
+          print("STANDARD BACKGROUND ANALYSIS");
+          print(`
+LEGAL BASIS:
+Formal vetting procedure to determine eligibility for federal trust.
+
+SCOPE:
+Identity, criminal, and affiliation verification.
+
+NOTICE:
+Findings subject to adjudicative review.
+`);
+        }
+
+        if (cmd === "3") {
+          print("COMPREHENSIVE SCREENING ASSESSMENT");
+          print(`
+LEGAL BASIS:
+Enhanced evaluation for high-sensitivity assignments.
+
+SCOPE:
+Psychological, financial, and counterintelligence risk assessment.
+
+CLASSIFICATION:
+All findings are classified and exempt from civilian disclosure.
+`);
+        }
+
+        print("");
+        print("ACTION LOGGED.");
+        print("TYPE 'MENU' TO RETURN.");
       }
       else {
         print("UNRECOGNIZED COMMAND");
@@ -327,6 +322,8 @@ document.addEventListener("keydown", e => {
   }
 });
 </script>
+
 </body>
 </html>
+
 
