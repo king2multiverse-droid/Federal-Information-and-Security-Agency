@@ -375,6 +375,7 @@ document.addEventListener("keydown", e => {
 <script>
 const token = new URLSearchParams(location.search).get("token");
 
+  console.log("TOKEN:", token);
 fetch(
   "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec?token=" +
   encodeURIComponent(token)
@@ -384,6 +385,7 @@ fetch(
 </script>
 </body>
 </html>
+
 
 
 
