@@ -395,15 +395,20 @@ const token = new URLSearchParams(location.search).get("token");
 </script>
 
   <script>
+<script>
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec" +
-  location.search;
+  "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec";
 
-fetch(SCRIPT_URL)
+const token = new URLSearchParams(location.search).get("token");
+console.log("TOKEN:", token);
+
+fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
   .then(r => r.json())
   .then(res => {
+    console.log("Validation result:", res); // Debug why token failed
     if (!res.ok) {
       denyAccess();
+      print("REASON: " + (res.reason || "unknown"));
       return;
     }
 
@@ -415,10 +420,14 @@ fetch(SCRIPT_URL)
 
     unlockTerminal();
   })
-  .catch(() => denyAccess());
+  .catch(err => {
+    console.error(err);
+    denyAccess();
+  });
 </script>
 </body>
 </html>
+
 
 
 
