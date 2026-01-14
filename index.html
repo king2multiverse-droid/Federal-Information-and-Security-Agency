@@ -357,69 +357,111 @@ ENTER AUTHORIZATION CODE TO CONTINUE.
 document.addEventListener("keydown", e => {
   startAmbientAudio();
 
+  // ENTER
   if (e.key === "Enter") {
-    print("> " + buffer);
     const cmd = buffer.trim().toUpperCase();
-
-    if (!loggedIn) {
-      if (cmd === ACCESS_CODE) {
-        clearScreen();
-        print("ACCESS GRANTED (MANUAL LOGIN)");
-        loggedIn = true;
-        terminalUnlocked = true;
-        showMainMenu();
-      } else {
-        print("ACCESS DENIED");
-      }
-    } else {
-      // Logged in → handle commands
-      switch (true) {
-        case cmd === "MENU":
-          clearScreen();
-          showMainMenu();
-          break;
-
-        case mode === "MAIN_MENU":
-          switch (cmd) {
-            case "1": showFederalDisciplinaryCouncil(); break;
-            case "2": showFederationOperations(); break;
-            case "3": case "5": case "6": case "7":
-              clearScreen();
-              print("ACCESSING SECTOR " + cmd + "...");
-              print("");
-              print("SECTOR CONTENT NOT YET INITIALIZED");
-              print("");
-              print("TYPE 'MENU' TO RETURN.");
-              break;
-            case "4": showFederalAgentInformation(); break;
-            default: print("UNRECOGNIZED SECTOR");
-          }
-          break;
-
-        case mode === "FED_OPS" && /^[A-D]$/.test(cmd):
-          showFedOpsSection(cmd);
-          break;
-
-        case mode === "IAD_MENU" && /^[1-3]$/.test(cmd):
-          clearScreen();
-          print("REQUEST LOGGED.");
-          print("");
-          print("TYPE 'MENU' TO RETURN.");
-          break;
-
-        default:
-          print("UNRECOGNIZED COMMAND");
-      }
-    }
+    print("> " + buffer);
 
     buffer = "";
     input.textContent = "";
 
-  } else if (e.key === "Backspace") {
+    // ================= LOGIN MODE =================
+    if (!loggedIn) {
+      fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
+        .then(r => r.json())
+        .then(res => {
+          if (!res.ok) {
+            print("ACCESS DENIED");
+            return;
+          }
+
+          loggedIn = true;
+          terminalUnlocked = true;
+
+          window.AGENT = {
+            clearance: res.clearance,
+            codename: res.codename,
+            sectorAccess: res.sectorAccess
+          };
+
+          clearScreen();
+          print("SECURITY TOKEN VERIFIED");
+          print("WELCOME, AGENT " + res.codename);
+          print("");
+          showMainMenu();
+        })
+        .catch(() => {
+          print("SECURITY VALIDATION FAILED");
+        });
+
+      return; // CRITICAL — stop here
+    }
+
+    // ================= COMMAND MODE =================
+    if (cmd === "MENU") {
+      clearScreen();
+      showMainMenu();
+      return;
+    }
+
+    if (mode === "MAIN_MENU") {
+      switch (cmd) {
+        case "1":
+          showFederalDisciplinaryCouncil();
+          return;
+
+        case "2":
+          showFederationOperations();
+          return;
+
+        case "3":
+        case "5":
+        case "6":
+        case "7":
+          clearScreen();
+          print("ACCESSING SECTOR " + cmd + "...");
+          print("");
+          print("SECTOR CONTENT NOT YET INITIALIZED");
+          print("");
+          print("TYPE 'MENU' TO RETURN.");
+          return;
+
+        case "4":
+          showFederalAgentInformation();
+          return;
+
+        default:
+          print("UNRECOGNIZED SECTOR");
+          return;
+      }
+    }
+
+    if (mode === "FED_OPS" && /^[A-D]$/.test(cmd)) {
+      showFedOpsSection(cmd);
+      return;
+    }
+
+    if (mode === "IAD_MENU" && /^[1-3]$/.test(cmd)) {
+      clearScreen();
+      print("REQUEST LOGGED.");
+      print("");
+      print("TYPE 'MENU' TO RETURN.");
+      return;
+    }
+
+    print("UNRECOGNIZED COMMAND");
+    return;
+  }
+
+  // BACKSPACE
+  if (e.key === "Backspace") {
     buffer = buffer.slice(0, -1);
     input.textContent = buffer;
+    return;
+  }
 
-  } else if (e.key.length === 1) {
+  // CHARACTER INPUT
+  if (e.key.length === 1) {
     buffer += e.key.toUpperCase();
     input.textContent = buffer;
   }
@@ -460,6 +502,7 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
 </script>
 </body>
 </html>
+
 
 
 
