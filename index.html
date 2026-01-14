@@ -66,15 +66,63 @@ body {
 <script>
 const terminal = document.getElementById("terminal");
 const inputSpan = document.getElementById("input");
-const clipboard = document.getElementById("clipboard");
 
 let buffer = "";
+let loggedIn = false;
+
+  // ===============================
+// COLD WAR STUTTER ENGINE
+// ===============================
+let printQueue = [];
+let printing = false;
+
+function stutterPrint(text) {
+  printQueue.push(text);
+  if (!printing) processQueue();
+}
+
+function processQueue() {
+  if (printQueue.length === 0) {
+    printing = false;
+    return;
+  }
+
+  printing = true;
+  const text = printQueue.shift();
+  let i = 0;
+
+  function typeChar() {
+    if (i >= text.length) {
+      // Paper feed hesitation
+      setTimeout(processQueue, randomBetween(80, 180));
+      return;
+    }
+
+    terminal.textContent += text[i];
+    i++;
+
+    let delay = randomBetween(12, 35);
+
+    // Electrical hesitation
+    if (Math.random() < 0.03) {
+      delay += randomBetween(80, 160);
+    }
+
+    setTimeout(typeChar, delay);
+  }
+
+  typeChar();
+}
+
+function randomBetween(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 // ===============================
 // TERMINAL OUTPUT
 // ===============================
 function print(text = "") {
-  terminal.textContent += text + "\n";
+  stutterPrint(text + "\n");
 }
 
 // ===============================
@@ -161,3 +209,4 @@ function processCommand(cmd) {
 
 </body>
 </html>
+
