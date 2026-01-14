@@ -77,6 +77,13 @@ body {
 </audio>
 
 <script>
+const API_URL = "https://script.google.com/macros/s/DEPLOYMENT_ID/exec";
+
+let terminalUnlocked = false;
+let loggedIn = false;
+</script>
+
+<script>
 /* =========================
    CORE STATE
 ========================= */
@@ -319,3 +326,4 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
 </script>
 </body>
 </html>
+
