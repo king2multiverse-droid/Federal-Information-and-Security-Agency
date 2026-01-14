@@ -412,7 +412,8 @@ else if (mode === "MAIN_MENU") {
 
     buffer = "";
     input.textContent = "";
-  } else if (e.key === "Backspace") {
+  } 
+  else if (e.key === "Backspace") {
     buffer = buffer.slice(0, -1);
     input.textContent = buffer;
   } else if (e.key.length === 1) {
@@ -456,3 +457,4 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
 </script>
 </body>
 </html>
+
