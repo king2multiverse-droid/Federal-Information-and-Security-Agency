@@ -89,61 +89,89 @@ ENTER AUTHORIZATION CODE TO CONTINUE.
 // ===============================
 // INPUT HANDLER
 // ===============================
+const terminal = document.getElementById("terminal");
+const inputSpan = document.getElementById("input");
+const clipboard = document.getElementById("clipboard");
+
+let buffer = "";
+
+// Focus clipboard silently
+document.body.addEventListener("click", () => clipboard.focus());
+clipboard.focus();
+
+// =======================
+// KEYBOARD INPUT
+// =======================
 document.addEventListener("keydown", e => {
-
-  if (e.key === "Enter") {
-    const cmd = buffer.trim().toUpperCase();
-    print("> " + buffer);
-
-    buffer = "";
-    inputEl.textContent = "";
-
-    if (loggedIn) {
-      print("TERMINAL ALREADY UNLOCKED");
-      return;
-    }
-
-    // SEND TOKEN TO SERVER
-    fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
-      .then(r => r.json())
-      .then(res => {
-        if (!res.ok) {
-          print("NO TOKEN PROVIDED");
-          print("");
-          print("SESSION TERMINATED");
-          return;
-        }
-
-        // SUCCESS
-        loggedIn = true;
-        terminal.textContent = "";
-        print("SECURITY TOKEN VERIFIED");
-        print("WELCOME, FEDERAL AGENT.");
-        print("");
-        print("MAIN TERMINAL ACCESS GRANTED.");
-      })
-      .catch(() => {
-        print("SECURITY VALIDATION FAILED");
-      });
-
+  if (e.ctrlKey && e.key === "v") {
+    // Let paste event handle it
     return;
   }
 
   if (e.key === "Backspace") {
     buffer = buffer.slice(0, -1);
-    inputEl.textContent = buffer;
+    updateInput();
+    e.preventDefault();
     return;
   }
 
-  if (e.key.length === 1) {
-    buffer += e.key.toUpperCase();
-    inputEl.textContent = buffer;
+  if (e.key === "Enter") {
+    processCommand(buffer.trim());
+    buffer = "";
+    updateInput();
+    e.preventDefault();
+    return;
+  }
+
+  if (e.key.length === 1 && !e.ctrlKey) {
+    buffer += e.key;
+    updateInput();
+    e.preventDefault();
   }
 });
+
+// =======================
+// PASTE HANDLING
+// =======================
+clipboard.addEventListener("paste", e => {
+  const text = (e.clipboardData || window.clipboardData).getData("text");
+  buffer += text.replace(/\s+/g, ""); // remove accidental newlines
+  updateInput();
+});
+
+// =======================
+// RENDER INPUT
+// =======================
+function updateInput() {
+  inputSpan.textContent = buffer;
+}
+
+// =======================
+// COMMAND HANDLER
+// =======================
+function processCommand(cmd) {
+  terminal.textContent += "\n> " + cmd + "\n";
+
+  // Example hook
+  if (!cmd) return;
+
+  terminal.textContent += "VALIDATING TOKEN...\n";
+}
 </script>
+
+  <textarea id="clipboard"
+  style="
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+    height: 1px;
+    width: 1px;
+  ">
+</textarea>
 
 </body>
 </html>
+
 
 
 
