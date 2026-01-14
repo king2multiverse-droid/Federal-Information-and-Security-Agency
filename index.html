@@ -383,8 +383,33 @@ fetch(
   .then(r => r.json())
   .then(res => res.ok ? unlockTerminal() : denyAccess());
 </script>
+
+  <script>
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec" +
+  location.search;
+
+fetch(SCRIPT_URL)
+  .then(r => r.json())
+  .then(res => {
+    if (!res.ok) {
+      denyAccess();
+      return;
+    }
+
+    window.AGENT = {
+      email: res.email,
+      clearance: res.clearance,
+      codename: res.codename
+    };
+
+    unlockTerminal();
+  })
+  .catch(() => denyAccess());
+</script>
 </body>
 </html>
+
 
 
 
