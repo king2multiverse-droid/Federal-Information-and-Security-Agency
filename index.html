@@ -350,14 +350,17 @@ document.addEventListener("keydown", e => {
         showMainMenu();
       } else if (mode === "MAIN_MENU" && cmd === "2") {
         showFederationOperations();
-      } else if (mode === "MAIN_MENU" && /^[1-7]$/.test(cmd)) {
-        clearScreen();
-        print("ACCESSING SECTOR " + cmd + "...");
-        print("");
-        print("SECTOR CONTENT NOT YET INITIALIZED");
-        print("");
-        print("TYPE 'MENU' TO RETURN.");
-      } else if (mode === "FED_OPS" && /^[A-D]$/.test(cmd)) {
+      } 
+        // Main menu handler
+else if (mode === "MAIN_MENU" && /^[1-7]$/.test(cmd)) {
+  clearScreen();
+  print("ACCESSING SECTOR " + cmd + "...");
+  print("");
+  print("SECTOR CONTENT NOT YET INITIALIZED");
+  print("");
+  print("TYPE 'MENU' TO RETURN.");
+}
+ else if (mode === "FED_OPS" && /^[A-D]$/.test(cmd)) {
         showFedOpsSection(cmd);
       } else if (mode === "IAD_MENU" && /^[1-3]$/.test(cmd)) {
         clearScreen();
@@ -414,16 +417,3 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
