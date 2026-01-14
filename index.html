@@ -150,6 +150,34 @@ function showMainMenu() {
 }
 
 /* =========================
+FEDERAL DISCIPLINARY COMMITTEE
+   ========================= */
+function showFederalDisciplinaryCouncil() {
+  clearscreen();
+  mode = "FEDERAL_DISCIPLINARY_COUNCIL";
+  print("FEDERAL DISCIPLINARY COMMITTEE");
+  print("=================");
+  print(`
+  MANDATE: Includes 2 sections, FISA Disciplinary Commitee, and
+  Government Security Division of Justice. Members are granted
+  seats based on rank and actions conducted by individuals.
+
+  SECURITY DIVISION MEMBERS INCLUDE:
+  MINISTER OF INTERNAL AFFAIRS, ImForeverBlue.
+  DEPUTY MINISTER OF INTERNAL AFFAIRS, [DATA EXPULGED].
+  DIRECTOR-GENERAL OF FISA, Shaheer1973.
+  DEPUTY DIRECTOR-GENERAL OF FISA, HTC_TheMarshal.
+
+  FISA DISCIPLINARY MEMBERS INCLUDE:
+  DIRECTOR OF IAD, Clairsii.
+  DIRECTOR OF ESD, [DATA EXPULGED].
+  DIRECTOR OF TED, Sky_Monkey.
+
+  ADVISORY MEMBERS INCLUDE:
+  Federal Section Officer, KingMultiverse_DVD.
+  `);
+  
+/* =========================
   FEDERAL AGENT INFORMATION
   ========================== */
 function showFederalAgentInformation() {
@@ -367,6 +395,10 @@ else if (mode === "MAIN_MENU") {
       print("TYPE 'MENU' TO RETURN.");
       break;
 
+    case "1"l
+      showFederalDisciplinaryCouncil();
+      break;
+      
     case "2":
       showFederationOperations();
       break;
@@ -436,4 +468,5 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
 </script>
 </body>
 </html>
+
 
