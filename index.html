@@ -313,6 +313,7 @@ document.addEventListener("keydown", e => {
   if (!terminalUnlocked) {
     return; // BLOCK ALL INPUT UNTIL TOKEN VALIDATED
   }
+
   if (e.key === "Enter") {
     print("> " + buffer);
     const cmd = buffer.trim().toUpperCase();
@@ -326,8 +327,7 @@ document.addEventListener("keydown", e => {
       } else {
         print("ACCESS DENIED");
       }
-    }
-    else {
+    } else {
       if (cmd === "MENU") {
         clearScreen();
         showMainMenu();
@@ -370,6 +370,7 @@ document.addEventListener("keydown", e => {
   }
 });
 </script>
+
   
 <script>
 const token = new URLSearchParams(location.search).get("token");
@@ -383,6 +384,7 @@ fetch(
 </script>
 </body>
 </html>
+
 
 
 
