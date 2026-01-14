@@ -5,6 +5,21 @@
 <title>Federal Information & Security Agency</title>
 
 <style>
+#logo-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+#logo {
+  max-width: 320px;
+  opacity: 0.15;
+  filter: blur(2.5px);
+}
+
 body {
   background: black;
   color: #00ff88;
@@ -14,7 +29,8 @@ body {
 }
 
 #terminal {
-  white-space: pre-wrap;
+  position: relative;
+  z-index: 1;
 }
 
 #input {
@@ -24,6 +40,9 @@ body {
 </head>
 
 <body>
+<div id="logo-container">
+  <img src="FISA.png" alt="FISA Logo" id="logo">
+</div>
 
 <div id="terminal"></div>
 <span>&gt; </span><span id="input"></span>
@@ -125,3 +144,4 @@ document.addEventListener("keydown", e => {
 
 </body>
 </html>
+
