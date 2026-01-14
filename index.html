@@ -59,19 +59,23 @@ body {
 </head>
 
 <body>
+  <!-- Logo overlay -->
   <div id="logo-container">
-    <img src="FISA logo.png" alt="FISA Logo" id="logo">
+    <img src="FISA.png" alt="FISA Logo" id="logo">
   </div>
 
+  <!-- Terminal -->
   <div id="terminal">
     <pre id="output"></pre>
     <span>&gt; </span><span id="input"></span>
   </div>
 
+  <!-- Audio -->
   <audio id="ambientAudio" loop preload="auto">
-    <source src="LEMMiNO - Blackout (BGM).mp3" type="audio/mpeg">
+    <source src="ambient_loop.mp3" type="audio/mpeg">
   </audio>
 </body>
+
 
 
 <script>
@@ -321,4 +325,5 @@ document.addEventListener("keydown", e => {
 </script>
 </body>
 </html>
+
 
