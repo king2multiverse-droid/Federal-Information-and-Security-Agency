@@ -77,16 +77,6 @@ body {
 </audio>
 
 <script>
-  const authResult = new URLSearchParams(location.search).get("auth");
-
-if (authResult === "OK") {
-  loggedIn = true;
-  terminalUnlocked = true;
-  clearScreen();
-  print("SECURITY TOKEN VERIFIED");
-  print("WELCOME, FEDERAL AGENT.");
-  showMainMenu();
-}
   let terminalUnlocked = false;
   
   function unlockTerminal() {
@@ -130,6 +120,17 @@ const SCRIPT_URL =
 let buffer = "";
 let loggedIn = false;
 let mode = "LOGIN"; // LOGIN | MAIN_MENU | FED_OPS | IAD_MENU | AGENT_INFO
+
+  const authResult = new URLSearchParams(location.search).get("auth");
+
+if (authResult === "OK") {
+  loggedIn = true;
+  terminalUnlocked = true;
+  clearScreen();
+  print("SECURITY TOKEN VERIFIED");
+  print("WELCOME, FEDERAL AGENT.");
+  showMainMenu();
+}
 
 function print(text = "") {
   output.textContent += text + "\n";
@@ -377,13 +378,12 @@ document.addEventListener("keydown", e => {
 
     // ================= LOGIN MODE =================
     if (!loggedIn) {
-      fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
-        .then(r => r.json())
-        .then(res => {
-          if (!res.ok) {
-            print("ACCESS DENIED");
-            return;
-          }
+      if (!loggedIn) {
+  window.location.href =
+    SCRIPT_URL + "?token=" + encodeURIComponent(cmd);
+  return;
+}
+}
         }};
 
       return; // CRITICAL — stop here
@@ -467,33 +467,25 @@ const SCRIPT_URL =
 const token = new URLSearchParams(location.search).get("token");
 console.log("TOKEN:", token);
 
-  /*
-fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
+fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
   .then(r => r.json())
   .then(res => {
-    console.log("Validation result:", res); // Debug why token failed
     if (!res.ok) {
-      denyAccess();
-      print("REASON: " + (res.reason || "unknown"));
+      print("ACCESS DENIED");
       return;
     }
 
-    window.AGENT = {
-      email: res.email,
-      clearance: res.clearance,
-      codename: res.codename
-    };
-
-    unlockTerminal();
+    // SUCCESS — redirect-based auth OR local unlock
+    window.location.href =
+      SCRIPT_URL + "?token=" + encodeURIComponent(cmd);
   })
-  .catch(err => {
-    console.error(err);
-    denyAccess();
+  .catch(() => {
+    print("SECURITY VALIDATION FAILED");
   });
-  */
 </script>
 </body>
 </html>
+
 
 
 
