@@ -77,6 +77,16 @@ body {
 </audio>
 
 <script>
+  const authResult = new URLSearchParams(location.search).get("auth");
+
+if (authResult === "OK") {
+  loggedIn = true;
+  terminalUnlocked = true;
+  clearScreen();
+  print("SECURITY TOKEN VERIFIED");
+  print("WELCOME, FEDERAL AGENT.");
+  showMainMenu();
+}
   let terminalUnlocked = false;
   
   function unlockTerminal() {
@@ -502,6 +512,7 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
 </script>
 </body>
 </html>
+
 
 
 
