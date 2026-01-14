@@ -5,15 +5,19 @@
 <title>FISA Secured Terminal</title>
 
 <style>
+/* Logo overlay */
 #logo-container {
-  text-align: right;        /* Center horizontally */
-  margin-top: 200px;          /* Space from top */
-  margin-bottom: 100px;       /* Space between logo and terminal */
+  position: absolute;     /* Take it out of normal flow */
+  top: 20px;              /* Distance from top of screen */
+  left: 50%;              /* Center horizontally */
+  transform: translateX(-50%); /* Perfect horizontal centering */
+  z-index: 10;            /* Ensure it sits above terminal text */
+  pointer-events: none;   /* So it doesn’t block typing in terminal */
 }
 
 #logo {
-  max-width: 700px;          /* Adjust width */
-  max-height: 900px;         /* Fill more vertical space */
+  max-width: 300px;       /* Adjust size */
+  max-height: 250px;      /* Adjust vertical space */
   width: auto;
   height: auto;
 }
@@ -72,7 +76,7 @@ body {
 
   <!-- Audio -->
   <audio id="ambientAudio" loop preload="auto">
-    <source src="ambient_loop.mp3" type="audio/mpeg">
+    <source src="LEMMiNO - Blackout (BGM).mp3" type="audio/mpeg">
   </audio>
 </body>
 
@@ -325,5 +329,3 @@ document.addEventListener("keydown", e => {
 </script>
 </body>
 </html>
-
-
