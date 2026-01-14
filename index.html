@@ -4,7 +4,18 @@
 <meta charset="UTF-8">
 <title>Federal Information & Security Agency</title>
 
+<!-- Load font explicitly -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
 <style>
+body {
+  background: black;
+  color: #2f275e;
+  font-family: Montserrat, monospace;
+  margin: 0;
+  padding: 10px;
+}
+
 #logo-container {
   position: fixed;
   top: 50%;
@@ -20,17 +31,10 @@
   filter: blur(2.5px);
 }
 
-body {
-  background: black;
-  color: #2f275e;
-  font-family: Montserrat;
-  margin: 0;
-  padding: 10px;
-}
-
 #terminal {
   position: relative;
   z-index: 1;
+  white-space: pre-wrap;
 }
 
 #input {
@@ -40,6 +44,7 @@ body {
 </head>
 
 <body>
+
 <div id="logo-container">
   <img src="FISA.png" alt="FISA Logo" id="logo">
 </div>
@@ -47,15 +52,23 @@ body {
 <pre id="terminal"></pre>
 <span>&gt; </span><span id="input"></span>
 
-<script>
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+<!-- Clipboard bridge MUST exist before script -->
+<textarea id="clipboard"
+  style="
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+    height: 1px;
+    width: 1px;
+  ">
+</textarea>
 
+<script>
 const terminal = document.getElementById("terminal");
-const inputEl  = document.getElementById("input");
+const inputSpan = document.getElementById("input");
+const clipboard = document.getElementById("clipboard");
 
 let buffer = "";
-let loggedIn = false;
 
 // ===============================
 // TERMINAL OUTPUT
@@ -86,16 +99,7 @@ ACCESS IS RESTRICTED TO PERSONNEL WITH VALID CLEARANCE.
 ENTER AUTHORIZATION CODE TO CONTINUE.
 `);
 
-// ===============================
-// INPUT HANDLER
-// ===============================
-const terminal = document.getElementById("terminal");
-const inputSpan = document.getElementById("input");
-const clipboard = document.getElementById("clipboard");
-
-let buffer = "";
-
-// Focus clipboard silently
+// Focus clipboard automatically
 document.body.addEventListener("click", () => clipboard.focus());
 clipboard.focus();
 
@@ -103,10 +107,7 @@ clipboard.focus();
 // KEYBOARD INPUT
 // =======================
 document.addEventListener("keydown", e => {
-  if (e.ctrlKey && e.key === "v") {
-    // Let paste event handle it
-    return;
-  }
+  if (e.ctrlKey && e.key === "v") return;
 
   if (e.key === "Backspace") {
     buffer = buffer.slice(0, -1);
@@ -134,8 +135,8 @@ document.addEventListener("keydown", e => {
 // PASTE HANDLING
 // =======================
 clipboard.addEventListener("paste", e => {
-  const text = (e.clipboardData || window.clipboardData).getData("text");
-  buffer += text.replace(/\s+/g, ""); // remove accidental newlines
+  const text = e.clipboardData.getData("text");
+  buffer += text.replace(/\s+/g, "");
   updateInput();
 });
 
@@ -150,28 +151,13 @@ function updateInput() {
 // COMMAND HANDLER
 // =======================
 function processCommand(cmd) {
-  terminal.textContent += "\n> " + cmd + "\n";
+  print("> " + cmd);
 
-  // Example hook
   if (!cmd) return;
 
-  terminal.textContent += "VALIDATING TOKEN...\n";
+  print("VALIDATING TOKEN...");
 }
 </script>
 
-  <textarea id="clipboard"
-  style="
-    position: fixed;
-    opacity: 0;
-    pointer-events: none;
-    height: 1px;
-    width: 1px;
-  ">
-</textarea>
-
 </body>
 </html>
-
-
-
-
