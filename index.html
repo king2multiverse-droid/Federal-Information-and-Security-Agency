@@ -79,6 +79,8 @@ body {
 </textarea>
 
 <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec";
+
 let terminalState = "AUTH"; 
 // AUTH | MAIN_MENU | SECTOR
 
@@ -274,11 +276,9 @@ if (terminalState === "AUTH") {
 }
 
   // ================= MAIN MENU =================
-function enterMainTerminal() {
-  terminalState = "MAIN_MENU";
-  stutterPrint("\nACCESS GRANTED\n");
-  stutterPrint("CLEARANCE ACCEPTED\n\n");
-  handleMainMenu();
+if (terminalState === "MAIN_MENU") {
+  handleMainMenu(cmd);
+  return;
 }
 
 function handleMainMenu(cmd) {
@@ -317,6 +317,7 @@ function handleMainMenu(cmd) {
 </script>
 </body>
 </html>
+
 
 
 
