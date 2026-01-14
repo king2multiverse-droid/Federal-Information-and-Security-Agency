@@ -252,21 +252,33 @@ function processCommand(cmd) {
   if (!cmd) return;
 
   // ================= AUTH STATE =================
-  if (terminalState === "AUTH") {
-    stutterPrint("VALIDATING TOKEN...\n");
+if (terminalState === "AUTH") {
+  stutterPrint("VALIDATING TOKEN...\n");
 
-    // your existing validation call lives here
-    // on success → call enterMainTerminal()
-    return;
-  }
+  fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
+    .then(r => r.json())
+    .then(res => {
+      if (!res.ok) {
+        stutterPrint("SECURITY VALIDATION FAILED\n");
+        stutterPrint("SESSION TERMINATED\n");
+        return;
+      }
+
+      enterMainTerminal();
+    })
+    .catch(() => {
+      stutterPrint("COMMUNICATION FAILURE\n");
+    });
+
+  return;
+}
 
   // ================= MAIN MENU =================
-  if (terminalState === "MAIN_MENU") {
-    handleMainMenu(cmd);
-    return;
-  }
-
-  stutterPrint("UNRECOGNIZED COMMAND\n");
+function enterMainTerminal() {
+  terminalState = "MAIN_MENU";
+  stutterPrint("\nACCESS GRANTED\n");
+  stutterPrint("CLEARANCE ACCEPTED\n\n");
+  handleMainMenu();
 }
 
 function handleMainMenu(cmd) {
@@ -305,6 +317,7 @@ function handleMainMenu(cmd) {
 </script>
 </body>
 </html>
+
 
 
 
