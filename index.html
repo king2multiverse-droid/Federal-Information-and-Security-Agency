@@ -114,7 +114,8 @@ function startAmbientAudio() {
 const output = document.getElementById("output");
 const input  = document.getElementById("input");
 
-const ACCESS_CODE = "FSS-1957";
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec";
 
 let buffer = "";
 let loggedIn = false;
@@ -459,5 +460,6 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
 </script>
 </body>
 </html>
+
 
 
