@@ -229,6 +229,16 @@ ACCESS IS RESTRICTED TO PERSONNEL WITH VALID CLEARANCE.
 ENTER AUTHORIZATION CODE TO CONTINUE.
 `);
 
+function denyAccess(msg) {
+  clearScreen();
+  print("************************************************************");
+  print("*                  FEDERAL SECURITY NOTICE                 *");
+  print("************************************************************");
+  print("");
+  print(msg);
+  print("");
+  print("SESSION TERMINATED");
+}
 /* =========================
    AUTH RESULT HANDLING
 ========================= */
@@ -246,6 +256,8 @@ if (authResult === "OK") {
 /* =========================
    INPUT HANDLER
 ========================= */
+document.addEventListener("keydown", e => {
+if (!terminalUnlocked) return;
 document.addEventListener("keydown", e => {
   startAmbientAudio();
 
@@ -298,32 +310,44 @@ document.addEventListener("keydown", e => {
     buffer += e.key.toUpperCase();
     input.textContent = buffer;
   }
-});
+})};
 </script>
 
 <script>
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec";
+window.addEventListener("load", () => {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
 
-const token = new URLSearchParams(location.search).get("token");
-console.log("TOKEN:", token);
+  console.log("TOKEN:", token);
 
-fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
-  .then(r => r.json())
-  .then(res => {
-    if (!res.ok) {
-      print("ACCESS DENIED");
-      return;
-    }
+  if (!token) {
+    denyAccess("NO TOKEN PROVIDED");
+    return;
+  }
 
-    // SUCCESS — redirect-based auth OR local unlock
-    window.location.href =
-      SCRIPT_URL + "?token=" + encodeURIComponent(cmd);
-  })
-  .catch(() => {
-    print("SECURITY VALIDATION FAILED");
-  });
+  fetch(`${API_URL}?token=${encodeURIComponent(token)}`)
+    .then(r => r.json())
+    .then(res => {
+      if (res.ok) {
+        loggedIn = true;
+        terminalUnlocked = true;
+
+        clearScreen();
+        print("SECURITY HANDSHAKE COMPLETE");
+        print("WELCOME, AGENT " + res.codename);
+        print("");
+        showMainMenu();
+      } else {
+        denyAccess("SECURITY VALIDATION FAILED");
+      }
+    })
+    .catch(() => {
+      denyAccess("SECURITY LINK FAILURE");
+    });
+});
 </script>
+
 </body>
 </html>
+
 
