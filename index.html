@@ -349,8 +349,13 @@ document.addEventListener("keydown", e => {
     input.textContent = buffer;
   }
 });
-</script>
 
+  <script>
+const token = new URLSearchParams(location.search).get("token");
+
+fetch("https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec?token=" + token)
+  .then(r => r.json())
+  .then(res => res.ok ? unlockTerminal() : denyAccess());
+</script>
 </body>
 </html>
-
