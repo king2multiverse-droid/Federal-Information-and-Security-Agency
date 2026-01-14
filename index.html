@@ -118,7 +118,7 @@ const ACCESS_CODE = "FSS-1957";
 
 let buffer = "";
 let loggedIn = false;
-let mode = "LOGIN"; // LOGIN | MAIN_MENU | FED_OPS | IAD_MENU
+let mode = "LOGIN"; // LOGIN | MAIN_MENU | FED_OPS | IAD_MENU | AGENT_INFO
 
 function print(text = "") {
   output.textContent += text + "\n";
@@ -154,7 +154,7 @@ function showMainMenu() {
   ========================== */
 function showFederalAgentInformation() {
     clearScreen();
-    mode = "AGNT_INFO";
+    mode = "AGENT_INFO";
     print("FEDERAL AGENT INFORMATION");
     print("=========================");
     print("");
@@ -352,13 +352,32 @@ document.addEventListener("keydown", e => {
         showFederationOperations();
       } 
         // Main menu handler
-else if (mode === "MAIN_MENU" && /^[1-7]$/.test(cmd)) {
-  clearScreen();
-  print("ACCESSING SECTOR " + cmd + "...");
-  print("");
-  print("SECTOR CONTENT NOT YET INITIALIZED");
-  print("");
-  print("TYPE 'MENU' TO RETURN.");
+else if (mode === "MAIN_MENU") {
+  switch (cmd) {
+    case "1":
+    case "3":
+    case "5":
+    case "6":
+    case "7":
+      clearScreen();
+      print("ACCESSING SECTOR " + cmd + "...");
+      print("");
+      print("SECTOR CONTENT NOT YET INITIALIZED");
+      print("");
+      print("TYPE 'MENU' TO RETURN.");
+      break;
+
+    case "2":
+      showFederationOperations();
+      break;
+
+    case "4":
+      showFederalAgentInformation();
+      break;
+
+    default:
+      print("UNRECOGNIZED SECTOR");
+  }
 }
  else if (mode === "FED_OPS" && /^[A-D]$/.test(cmd)) {
         showFedOpsSection(cmd);
@@ -367,7 +386,7 @@ else if (mode === "MAIN_MENU" && /^[1-7]$/.test(cmd)) {
         print("REQUEST LOGGED.");
         print("");
         print("TYPE 'MENU' TO RETURN.");
-      } else {
+      }else {
         print("UNRECOGNIZED COMMAND");
       }
     }
@@ -417,3 +436,4 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
 </script>
 </body>
 </html>
+
