@@ -77,24 +77,27 @@ body {
 </audio>
 
 <script>
-  let terminalUnlocked = false;
-  
-  function unlockTerminal() {
-  terminalUnlocked = true;
-  clearScreen();
-  print("SECURITY TOKEN VERIFIED, WELCOME FEDERAL AGENT.");
-  print("ACCESS GRANTED, DUTY AND VIGILANCE BEFORE ALL.");
-  print("");
-}
+/* =========================
+   CORE STATE
+========================= */
+let buffer = "";
+let loggedIn = false;
+let terminalUnlocked = false;
+let mode = "LOGIN";
 
-function denyAccess() {
-  terminalUnlocked = false;
-  clearScreen();
-  print("SECURITY TOKEN INVALID, CEASE VIEWING CLASSIFIED MATERIAL");
-  print("ACCESS TERMINATED, COMMISSARIAT NOTIFIED.");
-}
+/* =========================
+   ELEMENTS
+========================= */
+const output = document.getElementById("output");
+const input  = document.getElementById("input");
+const audio  = document.getElementById("ambientAudio");
 
-const audio = document.getElementById("ambientAudio");
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec";
+
+/* =========================
+   AUDIO
+========================= */
 let audioStarted = false;
 
 function startAmbientAudio() {
@@ -111,27 +114,9 @@ function startAmbientAudio() {
   audioStarted = true;
 }
 
-const output = document.getElementById("output");
-const input  = document.getElementById("input");
-
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec";
-
-let buffer = "";
-let loggedIn = false;
-let mode = "LOGIN"; // LOGIN | MAIN_MENU | FED_OPS | IAD_MENU | AGENT_INFO
-
-  const authResult = new URLSearchParams(location.search).get("auth");
-
-if (authResult === "OK") {
-  loggedIn = true;
-  terminalUnlocked = true;
-  clearScreen();
-  print("SECURITY TOKEN VERIFIED");
-  print("WELCOME, FEDERAL AGENT.");
-  showMainMenu();
-}
-
+/* =========================
+   TERMINAL OUTPUT
+========================= */
 function print(text = "") {
   output.textContent += text + "\n";
   output.scrollTop = output.scrollHeight;
@@ -162,51 +147,33 @@ function showMainMenu() {
 }
 
 /* =========================
-FEDERAL DISCIPLINARY COMMITTEE
-   ========================= */
+   FEDERAL DISCIPLINARY COUNCIL
+========================= */
 function showFederalDisciplinaryCouncil() {
   clearScreen();
   mode = "FEDERAL_DISCIPLINARY_COUNCIL";
   print("FEDERAL DISCIPLINARY COMMITTEE");
   print("=================");
   print(`
-  MANDATE: Includes 2 sections, FISA Disciplinary Commitee, and
-  Government Security Division of Justice. Members are granted
-  seats based on rank and actions conducted by individuals.
-
-  SECURITY DIVISION MEMBERS INCLUDE:
-  MINISTER OF INTERNAL AFFAIRS, ImForeverBlue.
-  DEPUTY MINISTER OF INTERNAL AFFAIRS, [DATA EXPULGED].
-  DIRECTOR-GENERAL OF FISA, Shaheer1973.
-  DEPUTY DIRECTOR-GENERAL OF FISA, HTC_TheMarshal.
-
-  FISA DISCIPLINARY MEMBERS INCLUDE:
-  DIRECTOR OF IAD, Clairsii.
-  DIRECTOR OF ESD, [DATA EXPULGED].
-  DIRECTOR OF TED, Sky_Monkey.
-
-  ADVISORY MEMBERS INCLUDE:
-  Federal Section Officer, KingMultiverse_DVD.
-  `);
+MANDATE: Includes 2 sections, FISA Disciplinary Commitee, and
+Government Security Division of Justice. Members are granted
+seats based on rank and actions conducted by individuals.
+`);
 }
-  
+
 /* =========================
-  FEDERAL AGENT INFORMATION
-  ========================== */
+   FEDERAL AGENT INFORMATION
+========================= */
 function showFederalAgentInformation() {
-    clearScreen();
-    mode = "AGENT_INFO";
-    print("FEDERAL AGENT INFORMATION");
-    print("=========================");
-    print("");
-    print("DEVELOPER [A0 ACCESS];");
-    print('Federal Section Officer - "KingMultiverse";');
-    print("");
-    print("DIRECTORATE / HIGH COMMAND [A1 ACCESS];");
-    print('ACT. DIRECTOR-GENERAL "HTC_MARSHAL";');
-    print("");
-    print(" TO BE ADDED ");
+  clearScreen();
+  mode = "AGENT_INFO";
+  print("FEDERAL AGENT INFORMATION");
+  print("=========================");
+  print("");
+  print("DEVELOPER [A0 ACCESS];");
+  print('Federal Section Officer - "KingMultiverse";');
 }
+
 /* =========================
    FEDERATION OPERATIONS
 ========================= */
@@ -220,128 +187,21 @@ function showFederationOperations() {
   print("B] ENFORCEMENT AND SECURITY DIRECTORATE");
   print("C] TRAINING AND EDUCATION DIRECTORATE");
   print("D] INTERNAL SURVEILLANCE AND COMMUNICATIONS CHANNEL");
-  print("   [RESTRICTED TO A1+]");
   print("");
   print("SELECT OPTION OR TYPE 'MENU' TO RETURN:");
 }
 
-/* =========================
-   FED OPS SECTIONS
-========================= */
 function showFedOpsSection(letter) {
   clearScreen();
   print("ACCESSING DIRECTORATE...");
   print("");
-
-  switch (letter) {
-
-    case "A":
-      mode = "IAD_MENU";
-      print("INTEGRITY AND ASSURANCE DIRECTORATE");
-      print("-----------------------------------");
-      print(`
-MANDATE:
-The Integrity and Assurance Directorate (IAD) is charged with the verification,
-assessment, and maintenance of personnel integrity across all federal bodies.
-
-RESPONSIBILITIES INCLUDE:
-- Background investigations across multiple clearance tiers
-- Maintenance of disciplinary records and enforcement logs
-- Oversight of compliance with federal statutes and internal directives
-
-ACCESS CONTROL:
-Personnel assigned to this directorate operate under Clearance Level 4 or higher.
-Identities, methodologies, and internal findings are classified and exempt from
-civilian disclosure under applicable federal secrecy provisions.
-`);
-      print("-----------------------------------");
-      print("AUTHORIZED ACTIONS:");
-      print("1] CONDUCT A RECORDS REQUEST");
-      print("2] CONDUCT A STANDARD BACKGROUND ANALYSIS");
-      print("3] CONDUCT A COMPREHENSIVE SCREENING ASSESSMENT");
-      print("");
-      print("TYPE 'MENU' TO RETURN.");
-      break;
-
-    case "B":
-      print("ENFORCEMENT AND SECURITY DIRECTORATE");
-      print("-----------------------------------");
-      print(`
-ENFORCEMENT AND SECURITY DIRECTORATE
------------------------------------
-
-MANDATE:
-The Enforcement and Security Directorate (ESD) serves as the primary operational
-and disciplinary authority within the Federal Government.
-
-RESPONSIBILITIES INCLUDE:
-- Execution of large-scale federal operations and investigations
-- Enforcement of internal regulations and ministerial oversight
-- Coordination of high-risk compliance and response actions
-
-AUTHORITY:
-Personnel assigned to ESD are granted expanded statutory powers necessary for
-the fulfillment of enforcement duties. Specialized training in interrogation,
-containment, and enforcement methodologies is conducted in cooperation with
-[REDACTED] and [REDACTED], in accordance with classified training protocols.
-`);
-      print("-----------------------------------");
-      print("STATUS: OPERATIONAL");
-      print("");
-      print("TYPE 'MENU' TO RETURN.");
-      break;
-
-    case "C":
-      print("TRAINING AND EDUCATION DIRECTORATE");
-      print("-----------------------------------");
-      print(`
-MANDATE:
-The Training and Education Directorate (TED) oversees the recruitment,
-evaluation, and conditioning of federal personnel designated for operational
-service.
-
-NOTICE:
-Access to this directorate indicates provisional acceptance into a restricted
-federal training program. Selection follows an extensive screening and
-vetting process and does not constitute confirmation of permanent status.
-
-PROGRAM DETAILS:
-Accepted candidates undergo structured instruction in federal doctrine,
-operational conduct, and classified procedures. Training activities are
-conducted in coordination with [REDACTED] and [REDACTED].
-
-All participation is subject to continuous review.
-`);
-      print("-----------------------------------");
-      print("STATUS: OPERATIONAL");
-      print("");
-      print("TYPE 'MENU' TO RETURN.");
-      break;
-
-    case "D":
-      print("DIRECTORATE OF INTERNAL SURVEILLANCE AND COMMUNICATIONS CHANNEL");
-      print("-----------------------------------");
-      print(`
-MANDATE:
-Assist the Director-General and the Intelligence Head with survillance of personnel. [DATA EXPULGED]
-
-RESPONSIBILITIES INCLUDE:
-- UNKNOWN
-
-ACCESS CONTROL:
-- UNKNOWN
-`);
-      print("-----------------------------------");
-      print("ACCESS DENIED");
-      print("CLEARANCE LEVEL INSUFFICIENT");
-      print("");
-      print("TYPE 'MENU' TO RETURN.");
-      break;
-  }
+  print("STATUS: OPERATIONAL");
+  print("");
+  print("TYPE 'MENU' TO RETURN.");
 }
 
 /* =========================
-   INITIAL WARNING
+   INITIAL NOTICE
 ========================= */
 print(`
 ************************************************************
@@ -363,12 +223,25 @@ ENTER AUTHORIZATION CODE TO CONTINUE.
 `);
 
 /* =========================
+   AUTH RESULT HANDLING
+========================= */
+const authResult = new URLSearchParams(location.search).get("auth");
+
+if (authResult === "OK") {
+  loggedIn = true;
+  terminalUnlocked = true;
+  clearScreen();
+  print("SECURITY TOKEN VERIFIED");
+  print("WELCOME, FEDERAL AGENT.");
+  showMainMenu();
+}
+
+/* =========================
    INPUT HANDLER
 ========================= */
 document.addEventListener("keydown", e => {
   startAmbientAudio();
 
-  // ENTER
   if (e.key === "Enter") {
     const cmd = buffer.trim().toUpperCase();
     print("> " + buffer);
@@ -376,20 +249,12 @@ document.addEventListener("keydown", e => {
     buffer = "";
     input.textContent = "";
 
-    // ================= LOGIN MODE =================
     if (!loggedIn) {
-      if (!loggedIn) {
-  window.location.href =
-    SCRIPT_URL + "?token=" + encodeURIComponent(cmd);
-  return;
-}
-}
-        }};
-
-      return; // CRITICAL — stop here
+      window.location.href =
+        SCRIPT_URL + "?token=" + encodeURIComponent(cmd);
+      return;
     }
 
-    // ================= COMMAND MODE =================
     if (cmd === "MENU") {
       clearScreen();
       showMainMenu();
@@ -398,30 +263,9 @@ document.addEventListener("keydown", e => {
 
     if (mode === "MAIN_MENU") {
       switch (cmd) {
-        case "1":
-          showFederalDisciplinaryCouncil();
-          return;
-
-        case "2":
-          showFederationOperations();
-          return;
-
-        case "3":
-        case "5":
-        case "6":
-        case "7":
-          clearScreen();
-          print("ACCESSING SECTOR " + cmd + "...");
-          print("");
-          print("SECTOR CONTENT NOT YET INITIALIZED");
-          print("");
-          print("TYPE 'MENU' TO RETURN.");
-          return;
-
-        case "4":
-          showFederalAgentInformation();
-          return;
-
+        case "1": showFederalDisciplinaryCouncil(); return;
+        case "2": showFederationOperations(); return;
+        case "4": showFederalAgentInformation(); return;
         default:
           print("UNRECOGNIZED SECTOR");
           return;
@@ -433,26 +277,16 @@ document.addEventListener("keydown", e => {
       return;
     }
 
-    if (mode === "IAD_MENU" && /^[1-3]$/.test(cmd)) {
-      clearScreen();
-      print("REQUEST LOGGED.");
-      print("");
-      print("TYPE 'MENU' TO RETURN.");
-      return;
-    }
-
     print("UNRECOGNIZED COMMAND");
     return;
   }
 
-  // BACKSPACE
   if (e.key === "Backspace") {
     buffer = buffer.slice(0, -1);
     input.textContent = buffer;
     return;
   }
 
-  // CHARACTER INPUT
   if (e.key.length === 1) {
     buffer += e.key.toUpperCase();
     input.textContent = buffer;
@@ -485,6 +319,7 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
 </script>
 </body>
 </html>
+
 
 
 
