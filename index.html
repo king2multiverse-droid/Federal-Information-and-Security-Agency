@@ -3,20 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <title>Federal Information & Security Agency</title>
+
 <style>
-  body {
-    background: black;
-    color: #00ff88;
-    font-family: monospace;
-    margin: 0;
-    padding: 10px;
-  }
-  #terminal {
-    white-space: pre-wrap;
-  }
-  #input {
-    display: inline;
-  }
+body {
+  background: black;
+  color: #00ff88;
+  font-family: monospace;
+  margin: 0;
+  padding: 10px;
+}
+
+#terminal {
+  white-space: pre-wrap;
+}
+
+#input {
+  display: inline;
+}
 </style>
 </head>
+
 <body>
+
+<div id="terminal"></div>
+<span>&gt; </span><span id="input"></span>
+
+<script>
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
+const terminal = document.getElementById("terminal");
+const inputEl  = document.getElementById("input");
+
+let buffer = "";
+let loggedIn = false;
+
+// ===============================
+// TERMINAL OUTPUT
+// ===============================
+function print(text = "") {
+  terminal.textContent += text + "\n";
+}
+
+// ===============================
+// INITIAL NOTICE
+// ===============================
+print(`
+************************************************************
+*                  FEDERAL SECURITY NOTICE                 *
+************************************************************
+
+THIS TERMINAL IS THE PROPERTY OF A FEDERAL AUTHORITY.
+
+UNAUTHORIZED ACCESS OR USE IS STRICTLY PROHIBITED.
+
+ALL ACTIVITIES PERFORMED ON THIS SYSTEM ARE:
+- MONITORED
+- RECORDED
+- SUBJECT TO REVIEW BY SECURITY OFFICERS
+
+ACCESS IS RESTRICTED TO PERSONNEL WITH VALID CLEARANCE.
+
+ENTER AUTHORIZATION CODE TO CONTINUE.
+`);
+
+// ===============================
+// INPUT HANDLER
+// ===============================
+document.addEventListener("keydown", e => {
+
+  if (e.key === "Enter") {
+    const cmd = buffer.trim().toUpperCase();
+    print("> " + buffer);
+
+    buffer = "";
+    inputEl.textContent = "";
+
+    if (loggedIn) {
+      print("TERMINAL ALREADY UNLOCKED");
+      return;
+    }
+
+    // SEND TOKEN TO SERVER
+    fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
+      .then(r => r.json())
+      .then(res => {
+        if (!res.ok) {
+          print("NO TOKEN PROVIDED");
+          print("");
+          print("SESSION TERMINATED");
+          return;
+        }
+
+        // SUCCESS
+        loggedIn = true;
+        terminal.textContent = "";
+        print("SECURITY TOKEN VERIFIED");
+        print("WELCOME, FEDERAL AGENT.");
+        print("");
+        print("MAIN TERMINAL ACCESS GRANTED.");
+      })
+      .catch(() => {
+        print("SECURITY VALIDATION FAILED");
+      });
+
+    return;
+  }
+
+  if (e.key === "Backspace") {
+    buffer = buffer.slice(0, -1);
+    inputEl.textContent = buffer;
+    return;
+  }
+
+  if (e.key.length === 1) {
+    buffer += e.key.toUpperCase();
+    inputEl.textContent = buffer;
+  }
+});
+</script>
+
+</body>
+</html>
