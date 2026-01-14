@@ -439,6 +439,7 @@ const SCRIPT_URL =
 const token = new URLSearchParams(location.search).get("token");
 console.log("TOKEN:", token);
 
+  /*
 fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
   .then(r => r.json())
   .then(res => {
@@ -461,11 +462,7 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
     console.error(err);
     denyAccess();
   });
+  */
 </script>
 </body>
 </html>
-
-
-
-
-
