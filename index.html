@@ -384,25 +384,7 @@ document.addEventListener("keydown", e => {
             print("ACCESS DENIED");
             return;
           }
-
-          loggedIn = true;
-          terminalUnlocked = true;
-
-          window.AGENT = {
-            clearance: res.clearance,
-            codename: res.codename,
-            sectorAccess: res.sectorAccess
-          };
-
-          clearScreen();
-          print("SECURITY TOKEN VERIFIED");
-          print("WELCOME, AGENT " + res.codename);
-          print("");
-          showMainMenu();
-        })
-        .catch(() => {
-          print("SECURITY VALIDATION FAILED");
-        });
+        }};
 
       return; // CRITICAL — stop here
     }
@@ -512,6 +494,7 @@ fetch(SCRIPT_URL + "?token=" + encodeURIComponent(token))
 </script>
 </body>
 </html>
+
 
 
 
