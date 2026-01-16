@@ -236,9 +236,8 @@ function processCommand(cmd) {
     handleMainMenu(cmd);
     return;
   }
-}
 
-if (terminalState === "SECTOR") {
+  if (terminalState === "SECTOR") {
   if (cmd === "MENU") {
     clearScreen();
     terminalState = "MAIN_MENU";
@@ -247,7 +246,10 @@ if (terminalState === "SECTOR") {
     stutterPrint("UNRECOGNIZED COMMAND\n");
   }
   return;
+ }
 }
+
+
 
 function handleMainMenu(cmd) {
   switch (cmd) {
@@ -313,5 +315,3 @@ TYPE "MENU" TO RETURN
 </script>
 </body>
 </html>
-
-
