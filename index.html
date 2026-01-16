@@ -165,6 +165,9 @@ ENTER SECTOR NUMBER:
 // =======================
 // INPUT HANDLING
 // =======================
+function clearScreen() {
+  terminal.textContent = "";
+}
 document.body.addEventListener("click", () => clipboard.focus());
 clipboard.focus();
 
@@ -219,7 +222,10 @@ function processCommand(cmd) {
           stutterPrint("SECURITY VALIDATION FAILED\nSESSION TERMINATED\n");
           return;
         }
+        setTimeout(() => {
+       clearScreen();
         enterMainTerminal();
+         }, 600);
       })
       .catch(() => stutterPrint("COMMUNICATION FAILURE\n"));
 
@@ -234,7 +240,7 @@ function processCommand(cmd) {
 
 function handleMainMenu(cmd) {
   switch (cmd) {
-    case "1": stutterPrint("\nACCESSING FEDERATION COUNCIL...\n"); break;
+    case "1": stutterPrint("\nACCESSING FEDERATION DISCIPLINARY COUNCIL...\n"); break;
     case "2": stutterPrint("\nACCESSING FEDERAL OPERATIONS...\n"); break;
     case "3": stutterPrint("\nACCESSING AGENT REGISTRY...\n"); break;
     case "4": stutterPrint("\nACCESSING MINISTERIAL OVERSIGHT...\n"); break;
@@ -246,6 +252,43 @@ function handleMainMenu(cmd) {
   }
   terminalState = "SECTOR";
 }
+
+function showFederationCouncil() {
+  clearScreen();
+
+  stutterPrint(
+`==================================================
+          FEDERATION DISCIPLINARY COUNIL
+ ==================================================
+
+ MANDATE:
+ Oversee the disciplinary actions of members of the government,
+ and provide internal insight on disciplinary affairs of the 
+ government personnel to the Prime Minister.
+
+ DUTIES:
+ - Acts as the Primary disciplinary committee for FISA.
+ - Acts as the disciplinary oversee of Justice in the Court.
+ - Provies Information to the Prime Minsiter.
+
+==================================================
+      SECURITY DIVISION OF JUSTICE MEMBERS
+==================================================
+Minister of Internal Affairs, ImForeverBlue.
+Deputy Minsiter of Internal Affairs, ███████████.
+DIRECTOR-GENERAL OF FISA, Shaheer1973.
+DEPUTY DIRECTOR-GENERAL OF FISA, HTC_TheMarshal.
+
+==================================================
+        DISCIPLINARY COMMITTEE OF FISA
+==================================================
+DIRECTORATE CHIEF OF IAD, Clairsii.
+DIRECTORATE CHIEF OF ESD, ███████████.
+DIRECTORATE CHIEF OF TED, S_Zpz.
+
+ADVISOR OF DIRECTORATE CHIEFS, KingMultiverse_DVD.
+==================================================
 </script>
 </body>
 </html>
+
