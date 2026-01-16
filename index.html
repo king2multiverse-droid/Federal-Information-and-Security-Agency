@@ -70,7 +70,7 @@ body {
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec";
 
-let terminalState = "AUTH"; // AUTH | MAIN_MENU | SECTOR
+let terminalState = "AUTH"; // AUTH | MAIN_MENU | SECTOR | FED_OPS
 const terminal = document.getElementById("terminal");
 const inputSpan = document.getElementById("input");
 const clipboard = document.getElementById("clipboard");
@@ -154,7 +154,7 @@ SELECT SECTOR:
 2] FEDERAL OPERATIONS
 3] AGENT REGISTRY
 4] MINISTERIAL OVERSIGHT
-5] PROJECT 'IRON'
+5] PROJECT 'HORUS'
 6] THE EYE
 
 ENTER SECTOR NUMBER:
@@ -259,7 +259,11 @@ function handleMainMenu(cmd) {
   setTimeout(showFederationCouncil, 700);
   break;
       
-    case "2": stutterPrint("\nACCESSING FEDERAL OPERATIONS...\n"); break;
+    case "2";
+  stutterPrint("\nACCESSING FEDERATION OPERATIONS...\n);
+  setTimeout(showFederationOperations, 700);
+  break;
+      
     case "3": stutterPrint("\nACCESSING AGENT REGISTRY...\n"); break;
     case "4": stutterPrint("\nACCESSING MINISTERIAL OVERSIGHT...\n"); break;
     case "5": stutterPrint("\nACCESSING PROJECT 'IRON'...\n"); break;
@@ -269,6 +273,28 @@ function handleMainMenu(cmd) {
       return;
   }
   terminalState = "SECTOR";
+}
+
+if (terminalState === "FED_OPS") {
+  switch (cmd) {
+
+  case "1";
+stutterPrint("\nACCESSING IAD OPERATIONS...\n);
+setTimeout(showIAD, 700);
+break;
+
+ case "2";
+stutterPrint("\ACCESSING ESD OPERATIONS...\n;
+break;
+
+ case "3";
+stutterPrint(\ACCESSING TED OPERATIONS...\n;
+break;
+
+   default:
+      stutterPrint("INVALID DIRECTIVE\n");
+  }
+  return;
 }
 
 function showFederationCouncil() {
@@ -312,6 +338,67 @@ TYPE "MENU" TO RETURN
 `
   );
 }
+
+function showFederationOperations() {
+  terminalState = "SECTOR";
+  clearScreen();
+
+  stutterPrint(
+`==================================================
+            FISA FEDERATION OPERATIONS
+ ==================================================
+
+MANDATE:
+FISA or Federal Information and Security Agency,
+is the core disciplinary department of the Government. 
+Part of the Ministry of Internal Affairs, the department,
+is tasked with various operations throughout the federation.
+
+DUTIES:
+- Maintanance of Government Personnel Records.
+- Investigation of People of Interest.
+- Maintanance of Disciplinary Records.
+- Training of Future Agents.
+- Coordination with ███████████ & ███████████.
+
+BRANCHES:
+- Integrity and Assurance Directorate  [IAD]
+- Enforcement and Security Directorate [ESD]
+- Traiining and Education Directorate  [TED]
+==================================================
+`);
+}
+
+function showIAD() {
+  terminalState = "FED_OPS";
+  clearScreen();
+
+  stutterPrint(
+`==================================================
+       INTEGRITY AND ASSURANCE DIRECTORATE
+ ==================================================
+ DIRECTORATE CHIEF - Clairsii
+ ADVISOR - KingMultiverse_DVD
+
+ MANDATE:
+ Tasked with creation of background checks and documentation,
+ for the government ministries. The sole directorate trusted to
+ keep maintanance of government disciplinary records and assess
+ the background of personnel.
+
+ DOCUMENTS:
+ - Vet Tool
+ - CSA Information Script
+ - Badge Graph Script
+ - Government Disciplinary Records
+
+BACKGROUND CLASSIFICATION LEVELS:
+- Records Request 
+- Advanced Records Request
+- Standard Background Screening
+- Comprehensive Security Assessment
+==================================================`);}
 </script>
 </body>
 </html>
+
