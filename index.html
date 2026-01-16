@@ -232,6 +232,11 @@ function processCommand(cmd) {
     return;
   }
 
+    if (terminalState === "FED_OPS") {
+    handleFedOps(cmd);
+    return;
+  }
+  
   if (terminalState === "MAIN_MENU") {
     handleMainMenu(cmd);
     return;
@@ -247,11 +252,6 @@ function processCommand(cmd) {
   }
   return;
  }
-
-  if (terminalState === "FED_OPS") {
-    handleFedOps(cmd);
-    return;
-  }
 }
 
 
@@ -265,7 +265,7 @@ function handleMainMenu(cmd) {
   break;
       
     case "2":
-  stutterPrint("\nACCESSING FEDERATION OPERATIONS...\n);
+  stutterPrint("\nACCESSING FEDERATION OPERATIONS...\n");
   setTimeout(showFederationOperations, 700);
   break;
       
@@ -280,7 +280,7 @@ function handleMainMenu(cmd) {
   terminalState = "SECTOR";
 }
 
-function handleFedOps() {
+function handleFedOps(cmd) {
   switch (cmd) {
 
   case "1":
@@ -293,7 +293,7 @@ stutterPrint("\ACCESSING ESD OPERATIONS...\n");
 break;
 
  case "3":
-stutterPrint(\ACCESSING TED OPERATIONS...\n");
+stutterPrint("\ACCESSING TED OPERATIONS...\n");
 break;
 
    default:
@@ -345,7 +345,7 @@ TYPE "MENU" TO RETURN
 }
 
 function showFederationOperations() {
-  terminalState = "SECTOR";
+  terminalState = "FED_OPS";
   clearScreen();
 
   stutterPrint(
@@ -406,3 +406,4 @@ BACKGROUND CLASSIFICATION LEVELS:
 </script>
 </body>
 </html>
+
