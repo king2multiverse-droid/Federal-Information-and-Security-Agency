@@ -238,9 +238,25 @@ function processCommand(cmd) {
   }
 }
 
+if (terminalState === "SECTOR") {
+  if (cmd === "MENU") {
+    clearScreen();
+    terminalState = "MAIN_MENU";
+    showMainMenu();
+  } else {
+    stutterPrint("UNRECOGNIZED COMMAND\n");
+  }
+  return;
+}
+
 function handleMainMenu(cmd) {
   switch (cmd) {
-    case "1": stutterPrint("\nACCESSING FEDERATION DISCIPLINARY COUNCIL...\n"); break;
+      
+    case "1":
+  stutterPrint("\nACCESSING FEDERATION DISCIPLINARY COUNCIL...\n");
+  setTimeout(showFederationCouncil, 700);
+  break;
+      
     case "2": stutterPrint("\nACCESSING FEDERAL OPERATIONS...\n"); break;
     case "3": stutterPrint("\nACCESSING AGENT REGISTRY...\n"); break;
     case "4": stutterPrint("\nACCESSING MINISTERIAL OVERSIGHT...\n"); break;
@@ -254,41 +270,48 @@ function handleMainMenu(cmd) {
 }
 
 function showFederationCouncil() {
+  terminalState = "SECTOR";
   clearScreen();
 
   stutterPrint(
 `==================================================
-          FEDERATION DISCIPLINARY COUNIL
- ==================================================
-
- MANDATE:
- Oversee the disciplinary actions of members of the government,
- and provide internal insight on disciplinary affairs of the 
- government personnel to the Prime Minister.
-
- DUTIES:
- - Acts as the Primary disciplinary committee for FISA.
- - Acts as the disciplinary oversee of Justice in the Court.
- - Provies Information to the Prime Minsiter.
-
+      FEDERATION DISCIPLINARY COUNCIL
 ==================================================
-      SECURITY DIVISION OF JUSTICE MEMBERS
-==================================================
-Minister of Internal Affairs, ImForeverBlue.
-Deputy Minsiter of Internal Affairs, ███████████.
-DIRECTOR-GENERAL OF FISA, Shaheer1973.
-DEPUTY DIRECTOR-GENERAL OF FISA, HTC_TheMarshal.
+
+MANDATE:
+Oversee disciplinary actions involving
+government personnel and provide internal
+judicial oversight to the Prime Minister.
+
+DUTIES:
+- Primary disciplinary authority for FISA
+- Oversight of judicial compliance
+- Advisory body to executive leadership
 
 ==================================================
-        DISCIPLINARY COMMITTEE OF FISA
+SECURITY DIVISION — JUSTICE MEMBERS
 ==================================================
-DIRECTORATE CHIEF OF IAD, Clairsii.
-DIRECTORATE CHIEF OF ESD, ███████████.
-DIRECTORATE CHIEF OF TED, S_Zpz.
+Minister of Internal Affairs: ImForeverBlue
+Deputy Minister of Internal Affairs: ███████████
+Director-General of FISA: Shaheer1973
+Deputy Director-General of FISA: HTC_TheMarshal
 
-ADVISOR OF DIRECTORATE CHIEFS, KingMultiverse_DVD.
 ==================================================
+FISA DISCIPLINARY COMMITTEE
+==================================================
+Directorate Chief (IAD): Clairsii
+Directorate Chief (ESD): ███████████
+Directorate Chief (TED): S_Zpz
+
+Advisor to Directorate Chiefs: KingMultiverse_DVD
+
+==================================================
+TYPE "MENU" TO RETURN
+`
+  );
+}
 </script>
 </body>
 </html>
+
 
