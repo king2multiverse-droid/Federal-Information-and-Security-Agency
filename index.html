@@ -350,7 +350,7 @@ function handleFedOps(cmd) {
       setTimeout(showSIA, 700);
       return;
 
-    case "RETURN"
+    case "RETURN":
       clearScreen();
       terminalState = "FED_OPS";
       showFederationOperations();
@@ -392,7 +392,7 @@ function handleAgentInfo(cmd) {
        setTimeout(showAgentOFF, 700);
     return;
 
-    case "RETURN"
+    case "RETURN":
       clearScreen();
       terminalState = "AGENT_INFO";
       handleAgentInfo();
