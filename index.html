@@ -260,6 +260,11 @@ function processCommand(cmd) {
     return;
   }
 
+  // AGENT INFORMATION
+  if (terminalState == "AGENT_INFO) {
+    handleAgentInfo(cmd);
+    return;
+}
 
   // GENERIC SECTOR SCREEN
   if (terminalState === "SECTOR") {
@@ -291,7 +296,6 @@ function handleMainMenu(cmd) {
 
     case "1":
       stutterPrint("\nACCESSING FEDERATION DISCIPLINARY COUNCIL...\n");
-      wait(5);
       setTimeout(showFederationCouncil, 700);
       return;
 
@@ -301,8 +305,7 @@ function handleMainMenu(cmd) {
       return;
 
     case "3":
-      stutterPrint("ACCESSING AGENT INFORMATION...\n");
-      wait(5);
+      stutterPrint("\nACCESSING AGENT INFORMATION...\n");
       setTimeout(showAgentinformation, 700);
       return;
 
@@ -340,12 +343,12 @@ function handleFedOps(cmd) {
       return;
 
     case "2":
-      stutterPrint("ACCESSING ESD OPERATIONS...\n");
+      stutterPrint("\nACCESSING ESD OPERATIONS...\n");
       setTimeout(showESD, 700);
       return;
 
     case "3":
-      stutterPrint("ACCESSING SIA OPERATIONS...\n");
+      stutterPrint("\nACCESSING SIA OPERATIONS...\n");
       setTimeout(showSIA, 700);
       return;
 
@@ -527,6 +530,9 @@ function showSIA() {
 TYPE MENU TO RETURN
 `);
 }
+
+function showAgentinformation(){
+  terminalState = "FED_INFO";
 </script>
 </body>
 </html>
