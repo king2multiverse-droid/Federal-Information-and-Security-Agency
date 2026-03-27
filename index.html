@@ -300,7 +300,9 @@ function handleMainMenu(cmd) {
       return;
 
     case "3":
-      stutterPrint("SECTOR 3 UNAVAILABLE\n");
+      stutterPrint("ACCESSING AGENT INFORMATION...\n");
+      wait(5);
+      setTimeout(showAgentinformation, 700);
       return;
 
     case "4":
