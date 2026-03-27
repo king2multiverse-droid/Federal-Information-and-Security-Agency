@@ -259,7 +259,7 @@ function processCommand(cmd) {
   }
 
   // AGENT INFORMATION
-  if (terminalState == "AGENT_INFO") {
+  if (terminalState === "AGENT_INFO") {
     handleAgentInfo(cmd);
     return;
 }
@@ -373,7 +373,7 @@ function handleAgentInfo(cmd) {
 
     case "1":
        stutterPrint("\nACCESSING ENLISTED INFORMATION\n");
-       setTimeout(showAgentEnlisted, 700);
+       setTimeout(showENL, 700);
     return;
 
     case "2":
