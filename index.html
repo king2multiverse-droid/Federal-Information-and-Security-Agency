@@ -68,6 +68,16 @@ body {
 <textarea id="clipboard" style="position:fixed;opacity:0;height:1px;width:1px;"></textarea>
 
 <script>
+  let permissions = {
+  council: false,
+  fed_ops: false,
+  registry: false,
+  oversight: false,
+  horus: false,
+  eye: false
+};
+
+  
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJDDsj4Ow8o-sbN3mPIb2sPn76ubIe-rNvKMZoEhBric-yId1yGHDQKThvXelrZag/exec";
 
 let terminalState = "AUTH"; // AUTH | MAIN_MENU | SECTOR | FED_OPS
@@ -218,17 +228,18 @@ function processCommand(cmd) {
     fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
       .then(r => r.json())
       .then(res => {
-        if (!res.ok) {
-          stutterPrint("SECURITY VALIDATION FAILED\nSESSION TERMINATED\n");
-          return;
-        }
-        setTimeout(() => {
-       clearScreen();
-        enterMainTerminal();
-         }, 600);
-      })
-      .catch(() => stutterPrint("COMMUNICATION FAILURE\n"));
+  if (!res.ok) {
+    stutterPrint("SECURITY VALIDATION FAILED\nSESSION TERMINATED\n");
+    return;
+  }
 
+  permissions = res.permissions || permissions;
+
+  setTimeout(() => {
+    clearScreen();
+    enterMainTerminal();
+  }, 600);
+})
     return;
   }
 
@@ -258,25 +269,62 @@ function processCommand(cmd) {
 
 function handleMainMenu(cmd) {
   switch (cmd) {
-      
+
     case "1":
-  stutterPrint("\nACCESSING FEDERATION DISCIPLINARY COUNCIL...\n");
-  setTimeout(showFederationCouncil, 700);
-  break;
-      
+      if (!permissions.council) {
+        stutterPrint("SECTOR IS UNAVAILABLE\n");
+        return;
+      }
+      stutterPrint("\nACCESSING FEDERATION DISCIPLINARY COUNCIL...\n");
+      setTimeout(showFederationCouncil, 700);
+      break;
+
     case "2":
-  stutterPrint("\nACCESSING FEDERATION OPERATIONS...\n");
-  setTimeout(showFederationOperations, 700);
-  break;
-      
-    case "3": stutterPrint("\nACCESSING AGENT REGISTRY...\n"); break;
-    case "4": stutterPrint("\nACCESSING MINISTERIAL OVERSIGHT...\n"); break;
-    case "5": stutterPrint("\nACCESSING PROJECT 'IRON'...\n"); break;
-    case "6": stutterPrint("\nACCESSING THE EYE...\n"); break;
+      if (!permissions.fed_ops) {
+        stutterPrint("SECTOR IS UNAVAILABLE\n");
+        return;
+      }
+      stutterPrint("\nACCESSING FEDERATION OPERATIONS...\n");
+      setTimeout(showFederationOperations, 700);
+      break;
+
+    case "3":
+      if (!permissions.registry) {
+        stutterPrint("SECTOR IS UNAVAILABLE\n");
+        return;
+      }
+      stutterPrint("\nACCESSING AGENT REGISTRY...\n");
+      break;
+
+    case "4":
+      if (!permissions.oversight) {
+        stutterPrint("SECTOR IS UNAVAILABLE\n");
+        return;
+      }
+      stutterPrint("\nACCESSING MINISTERIAL OVERSIGHT...\n");
+      break;
+
+    case "5":
+      if (!permissions.horus) {
+        stutterPrint("SECTOR IS UNAVAILABLE\n");
+        return;
+      }
+      stutterPrint("\nACCESSING PROJECT 'IRON'...\n");
+      break;
+
+    case "6":
+      if (!permissions.eye) {
+        stutterPrint("SECTOR IS UNAVAILABLE\n");
+        return;
+      }
+      stutterPrint("\nACCESSING THE EYE...\n");
+      break;
+
     default:
       stutterPrint("INVALID SECTOR SELECTION\n");
       return;
   }
+
   terminalState = "SECTOR";
 }
 
