@@ -337,11 +337,13 @@ function handleFedOps(cmd) {
       return;
 
     case "2":
-      stutterPrint("SECTOR ESD UNAVAILABLE\n");
+      stutterPrint("ACCESSING ESD OPERATIONS...\n");
+      setTimeout(showESD, 700);
       return;
 
     case "3":
-      stutterPrint("SECTOR TED UNAVAILABLE\n");
+      stutterPrint("ACCESSING SIA OPERATIONS...\n");
+      setTimeout(showSIA, 700);
       return;
 
     case "MENU":
@@ -380,18 +382,20 @@ DUTIES:
 SECURITY DIVISION — JUSTICE MEMBERS
 ==================================================
 Minister of Internal Affairs: ImForeverBlue
-Deputy Minister of Internal Affairs: ███████████
-Director-General of FISA: Shaheer1973
+Deputy Minister of Internal Affairs: BunnySkrr
+Director-General of FISA: ███████████
 Deputy Director-General of FISA: HTC_TheMarshal
 
 ==================================================
 FISA DISCIPLINARY COMMITTEE
 ==================================================
-Directorate Chief (IAD): Clairsii
-Directorate Chief (ESD): ███████████
-Directorate Chief (TED): S_Zpz
+Directorate Chief (IAD): clairsii
+Directorate Chief (ESD): seanalexander8
+Directorate Chief (SIA): PapiLansing
 
-Advisor to Directorate Chiefs: KingMultiverse_DVD
+Advisor to Directorate Chiefs:
+KingMultiverse_DVD
+Azap634
 
 ==================================================
 TYPE "MENU" TO RETURN
@@ -425,7 +429,7 @@ BRANCHES:
 
 1] Integrity and Assurance Directorate  [IAD]
 2] Enforcement and Security Directorate [ESD]
-3] Training and Education Directorate   [TED]
+3] Security and Information Academy     [SIA]
 
 TYPE NUMBER TO ACCESS
 TYPE MENU TO RETURN
@@ -441,8 +445,8 @@ function showIAD() {
 `==================================================
        INTEGRITY AND ASSURANCE DIRECTORATE
  ==================================================
- DIRECTORATE CHIEF - Clairsii
- ADVISOR - KingMultiverse_DVD
+ DIRECTORATE CHIEF - clairsii
+ ENFORCER - ash7lyn
 
  MANDATE:
  Tasked with creation of background checks and documentation,
@@ -461,6 +465,61 @@ BACKGROUND CLASSIFICATION LEVELS:
 - Advanced Records Request
 - Standard Background Screening
 - Comprehensive Security Assessment
+==================================================
+TYPE MENU TO RETURN
+`);
+}
+
+function showESD() {
+  terminalState = "FED_OPS";
+  clearScreen();
+
+  stutterPrint(
+`==================================================
+       ENFORCEMENT AND SECURITY DIRECTORATE
+ ==================================================
+ DIRECTORATE CHIEF - seanalexander8
+ ENFORCER - Benana_NVIP2023
+
+ MANDATE:
+ Tasked with enforcement of the government disciplinary code,
+ investigation of criminal offenses, and interrogation of 
+ criminals. The directorate is responsible for all Judicial
+ related duties for FISA.
+
+ DOCUMENTS:
+ - ESD Guide
+ - Interrogation Guide
+
+DUTIES:
+- Enforcement of the law.
+- Investigation of criminal offenses.
+- Processing casefiles of personnel.
+==================================================
+TYPE MENU TO RETURN
+`);
+}
+
+function showSIA() {
+  terminalState = "FED_OPS";
+  clearScreen();
+
+  stutterPrint(
+`==================================================
+        Security and Information Academy
+ ==================================================
+ DIRECTORATE CHIEF - PapiLansing
+ ENFORCER - 
+
+ MANDATE:
+ Tasked with training of future agents, the academy
+ is funded with state of the art applications,
+ to assist the staff with interrogation, investigation,
+ and background assessment training for agents.
+
+ DOCUMENTS:
+ - IAD Training Document
+ - ESD Training Document
 ==================================================
 TYPE MENU TO RETURN
 `);
