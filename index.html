@@ -264,12 +264,6 @@ function processCommand(cmd) {
     return;
 }
 
-  // AGENT INFO SUB-MENU
-  if (terminalState == "AGNT_SUB") {
-      handleAgentInfoSub(cmd);
-  return;
-}
-
   // GENERIC SECTOR SCREEN
   if (terminalState === "SECTOR") {
 
@@ -378,29 +372,6 @@ function handleAgentInfo(cmd) {
   switch (cmd) {
 
     case "1":
-      stutterPrint("\nACCESSING AGENT INFORMATION\n");
-      setTimeout(showagentinformation, 700);
-      return;
-
-    case "MENU":
-      clearScreen();
-      terminalState = "MAIN_MENU";
-      showMainMenu();
-      return;
-
-    default:
-      stutterPrint("INVALID SECTION\n");
-  }
-}
-
-// =============================
-//   AGENT INFORMATION SUB-MENU
-// =============================
-
-  function handleAgentInfoSub(cmd) {
-
-     switch (cmd) {
-    case "1":
        stutterPrint("\nACCESSING ENLISTED INFORMATION\n");
        setTimeout(showAgentEnlisted, 700);
     return;
@@ -419,12 +390,12 @@ function handleAgentInfo(cmd) {
       clearScreen();
       terminalState = "MAIN_MENU";
       showMainMenu();
-    return;
+      return;
 
-     default:
-       stutterPrint("INVALID SELECTION\n");
-   }
+    default:
+      stutterPrint("INVALID SECTION\n");
   }
+}
   
 function showFederationCouncil() {
   terminalState = "SECTOR";
