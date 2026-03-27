@@ -365,6 +365,30 @@ function handleFedOps(cmd) {
 
 }
 
+// =======================
+//   AGENT INFORMATION
+// =======================
+
+function handleAgentInfo(cmd) {
+
+  switch (cmd) {
+
+    case "1":
+      stutterPrint("\nACCESSING AGENT INFORMATION...\N");
+      setTimeout(showagentinformation, 700);
+      return
+
+    case "MENU";
+      clearScreen();
+      terminalState = "MAIN_MENU";
+      showMainMenu();
+      return;
+
+    default:
+      stutterPrint("INVALID SECTION\n");
+  }
+}
+  
 function showFederationCouncil() {
   terminalState = "SECTOR";
   clearScreen();
