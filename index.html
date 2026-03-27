@@ -344,6 +344,12 @@ break;
       stutterPrint("INVALID DIRECTIVE\n");
   }
   return;
+
+  case "MENU":
+clearScreen();
+terminalState = "MAIN_MENU";
+showMainMenu();
+break;
 }
 
 function showFederationCouncil() {
