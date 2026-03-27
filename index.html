@@ -246,6 +246,11 @@ function processCommand(cmd) {
     return;
   }
 
+  // MAIN MENU
+  if (terminalState === "MAIN_MENU") {
+    handleMainMenu(cmd);
+    return;
+  }
 
   // FED OPS SUBMENU
   if (terminalState === "FED_OPS") {
@@ -253,17 +258,16 @@ function processCommand(cmd) {
     return;
   }
 
-
-  // MAIN MENU
-  if (terminalState === "MAIN_MENU") {
-    handleMainMenu(cmd);
-    return;
-  }
-
   // AGENT INFORMATION
   if (terminalState == "AGENT_INFO") {
     handleAgentInfo(cmd);
     return;
+}
+
+  // AGENT INFO SUB-MENU
+  if (terminalState == "AGNT_SUB") {
+      handleAgentEnlisted(cmd);
+  return;
 }
 
   // GENERIC SECTOR SCREEN
@@ -374,9 +378,9 @@ function handleAgentInfo(cmd) {
   switch (cmd) {
 
     case "1":
-      stutterPrint("\nACCESSING AGENT INFORMATION...\N");
+      stutterPrint("\nACCESSING AGENT INFORMATION\n");
       setTimeout(showagentinformation, 700);
-      return
+      return;
 
     case "MENU":
       clearScreen();
@@ -388,6 +392,39 @@ function handleAgentInfo(cmd) {
       stutterPrint("INVALID SECTION\n");
   }
 }
+
+// =============================
+//   AGENT INFORMATION SUB-MENU
+// =============================
+
+  function handleAgentEnlisted(cmd) {
+
+     switch (cmd) {
+    case "1":
+       stutterPrint("\nACCESSING ENLISTED INFORMATION\n");
+       setTimeout(showAgentEnlisted, 700);
+    return;
+
+    case "2":
+       stutterPrint("\nACCESSING NCO INFORMATION\n");
+       setTimeout(showAgentNCO, 700);
+    return;
+
+    case "3":
+       stutterPrint("\nACCESSING OFFICER INFORMATION\n");
+       setTimeout(showAgentOFF, 700);
+    return;
+
+    case "MENU":
+      clearScreen();
+      terminalState = "MAIN_MENU";
+      showMainMenu();
+    return;
+
+     default:
+       stutterPrint("INVALID SELECTION\n");
+   }
+  }
   
 function showFederationCouncil() {
   terminalState = "SECTOR";
@@ -575,6 +612,59 @@ function showAgentinformation(){
  4] High Command
 ==================================================
 TYPE NUMBER TO ACCESS
+TYPE MENU TO RETURN
+`);
+}
+
+function showAgentEnlisted() {
+  terminalState = "AGENT_SUB";
+  clearScreen():
+
+  stutterPrint(
+`==================================================
+                ENLISTED INFORMATION
+==================================================
+
+The beginning ranks of the Agency, and it's main workforce.
+Tasked with duties from their directorates, these agents are
+what keep the Agency running.
+
+
+STATUS : Field Agent
+The senior most enlisted rank, these Agents have proven themselves
+as reliable members of the Agency, by completing their tasks 
+in timely manner and professional order.
+PRIVILEGES : 
+- May give physical punishments in-game.
+- Includes everything from Probationary Federal Agent+.
+ACCESS : Oversight, Tools, Punishments.
+
+STTAUS : Federal Agent
+The middle enlisted rank, these agents have proven themselves
+to be unsupervised. Their duties include completion of tasks,
+assisting officers and ensuring the law is enforced.
+PRIVLEGES : 
+- May interrogate immigrants/civilians in-game.
+- May hold the FISA oversight roles in ministry servers.
+ACCESS : Oversight, Tools.
+
+STATUS : Probationary Federal Agent
+The first rank inside the Agency. The recently graduated agents
+from the Academy. They have the highest potential in the Agency.
+PRIVLEGES:
+- May patrol at IRF games on the MoIA team.
+- May spectate at all Government events.
+- May conduct assigned solo or group investigations.
+- May conduct background checks.
+ACCESS : Tools.
+
+STATUS: Federal Agent in Training
+The candidate status inside the Agency, these are government personnel
+who are yet to graduate and become full fledged Agents.
+PRIVLEGES : 
+- May not represent FISA unsupervised without adequate supervision.
+ACCESS : Academy Documents.
+===================================================================
 TYPE MENU TO RETURN
 `);
 }
