@@ -532,7 +532,28 @@ TYPE MENU TO RETURN
 }
 
 function showAgentinformation(){
-  terminalState = "FED_INFO";
+  terminalState = "AGENT_INFO";
+  clearScreen();
+
+  stutterPrint(
+`==================================================
+                AGENCY INFORMATION
+==================================================
+
+ The Agency consists of multiple ranks, and designations,
+ each responsible for different duties, and having different
+ privileges. The information on this can be found below.
+
+ SUB-SECTIONS:
+ 1] Enlisted Personnel
+ 2] Non-Commissioned Personnel
+ 3] Commissioned Personnel
+ 4] High Command
+==================================================
+TYPE NUMBER TO ACCESS
+TYPE MENU TO RETURN
+`);
+}
 </script>
 </body>
 </html>
