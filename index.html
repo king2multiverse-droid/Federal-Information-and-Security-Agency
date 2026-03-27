@@ -216,140 +216,145 @@ function updateInput() {
 }
 
 // =======================
-// COMMAND HANDLER (FIXED)
+// COMMAND HANDLER
 // =======================
+
 function processCommand(cmd) {
+
   terminal.textContent += "\n> " + cmd + "\n";
   if (!cmd) return;
 
+  // AUTH SCREEN
   if (terminalState === "AUTH") {
-    stutterPrint("VALIDATING TOKEN...\n");
 
-    fetch(SCRIPT_URL + "?token=" + encodeURIComponent(cmd))
-      .then(r => r.json())
-      .then(res => {
-  if (!res.ok) {
-    stutterPrint("SECURITY VALIDATION FAILED\nSESSION TERMINATED\n");
+    if (cmd === "FSS-1948") {
+
+      stutterPrint("VALIDATING TOKEN...\n");
+
+      setTimeout(() => {
+        clearScreen();
+        enterMainTerminal();
+      }, 600);
+
+    } else {
+
+      stutterPrint("SECURITY VALIDATION FAILED\n");
+      stutterPrint("ENTER AUTHORIZATION CODE:\n");
+
+    }
+
     return;
   }
 
-  permissions = res.permissions || permissions;
 
-  setTimeout(() => {
-    clearScreen();
-    enterMainTerminal();
-  }, 600);
-})
-    return;
-  }
-
-    if (terminalState === "FED_OPS") {
+  // FED OPS SUBMENU
+  if (terminalState === "FED_OPS") {
     handleFedOps(cmd);
     return;
   }
-  
+
+
+  // MAIN MENU
   if (terminalState === "MAIN_MENU") {
     handleMainMenu(cmd);
     return;
   }
 
+
+  // GENERIC SECTOR SCREEN
   if (terminalState === "SECTOR") {
-  if (cmd === "MENU") {
-    clearScreen();
-    terminalState = "MAIN_MENU";
-    showMainMenu();
-  } else {
-    stutterPrint("UNRECOGNIZED COMMAND\n");
+
+    if (cmd === "MENU") {
+
+      clearScreen();
+      terminalState = "MAIN_MENU";
+      showMainMenu();
+
+    } else {
+
+      stutterPrint("UNRECOGNIZED COMMAND\nTYPE MENU TO RETURN\n");
+
+    }
+
+    return;
   }
-  return;
- }
 }
 
 
+// =======================
+// MAIN MENU HANDLER
+// =======================
 
 function handleMainMenu(cmd) {
+
   switch (cmd) {
 
     case "1":
-      if (!permissions.council) {
-        stutterPrint("SECTOR IS UNAVAILABLE\n");
-        return;
-      }
       stutterPrint("\nACCESSING FEDERATION DISCIPLINARY COUNCIL...\n");
       setTimeout(showFederationCouncil, 700);
       return;
 
     case "2":
-      if (!permissions.fed_ops) {
-        stutterPrint("SECTOR IS UNAVAILABLE\n");
-        return;
-      }
       stutterPrint("\nACCESSING FEDERATION OPERATIONS...\n");
       setTimeout(showFederationOperations, 700);
       return;
 
     case "3":
-      if (!permissions.registry) {
-        stutterPrint("SECTOR IS UNAVAILABLE\n");
-        return;
-      }
-      stutterPrint("\nACCESSING AGENT REGISTRY...\n");
+      stutterPrint("SECTOR 3 UNAVAILABLE\n");
       return;
 
     case "4":
-      if (!permissions.oversight) {
-        stutterPrint("SECTOR IS UNAVAILABLE\n");
-        return;
-      }
-      stutterPrint("\nACCESSING MINISTERIAL OVERSIGHT...\n");
+      stutterPrint("SECTOR 4 UNAVAILABLE\n");
       return;
 
     case "5":
-      if (!permissions.horus) {
-        stutterPrint("SECTOR IS UNAVAILABLE\n");
-        return;
-      }
-      stutterPrint("\nACCESSING PROJECT 'IRON'...\n");
+      stutterPrint("SECTOR 5 UNAVAILABLE\n");
       return;
 
     case "6":
-      if (!permissions.eye) {
-        stutterPrint("SECTOR IS UNAVAILABLE\n");
-        return;
-      }
-      stutterPrint("\nACCESSING THE EYE...\n");
+      stutterPrint("SECTOR 6 UNAVAILABLE\n");
       return;
 
     default:
       stutterPrint("INVALID SECTOR SELECTION\n");
+
   }
+
 }
+
+
+// =======================
+// FED OPS SUBMENU
+// =======================
+
 function handleFedOps(cmd) {
+
   switch (cmd) {
 
-  case "1":
-stutterPrint("\nACCESSING IAD OPERATIONS...\n");
-setTimeout(showIAD, 700);
-break;
+    case "1":
+      stutterPrint("\nACCESSING IAD OPERATIONS...\n");
+      setTimeout(showIAD, 700);
+      return;
 
- case "2":
-stutterPrint("\ACCESSING ESD OPERATIONS...\n");
-break;
+    case "2":
+      stutterPrint("SECTOR ESD UNAVAILABLE\n");
+      return;
 
- case "3":
-stutterPrint("\ACCESSING TED OPERATIONS...\n");
-break;
+    case "3":
+      stutterPrint("SECTOR TED UNAVAILABLE\n");
+      return;
 
-   default:
+    case "MENU":
+      clearScreen();
+      terminalState = "MAIN_MENU";
+      showMainMenu();
+      return;
+
+    default:
       stutterPrint("INVALID DIRECTIVE\n");
-  }
-  return;
 
-  case "MENU":
-clearScreen();
-terminalState = "MAIN_MENU";
-showMainMenu();
-break;
+  }
+
 }
 
 function showFederationCouncil() {
