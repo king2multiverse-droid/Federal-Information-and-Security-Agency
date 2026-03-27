@@ -266,7 +266,7 @@ function processCommand(cmd) {
 
   // AGENT INFO SUB-MENU
   if (terminalState == "AGNT_SUB") {
-      handleAgentEnlisted(cmd);
+      handleAgentInfoSub(cmd);
   return;
 }
 
@@ -397,7 +397,7 @@ function handleAgentInfo(cmd) {
 //   AGENT INFORMATION SUB-MENU
 // =============================
 
-  function handleAgentEnlisted(cmd) {
+  function handleAgentInfoSub(cmd) {
 
      switch (cmd) {
     case "1":
