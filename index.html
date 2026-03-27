@@ -277,7 +277,7 @@ function handleMainMenu(cmd) {
       }
       stutterPrint("\nACCESSING FEDERATION DISCIPLINARY COUNCIL...\n");
       setTimeout(showFederationCouncil, 700);
-      break;
+      return;
 
     case "2":
       if (!permissions.fed_ops) {
@@ -286,7 +286,7 @@ function handleMainMenu(cmd) {
       }
       stutterPrint("\nACCESSING FEDERATION OPERATIONS...\n");
       setTimeout(showFederationOperations, 700);
-      break;
+      return;
 
     case "3":
       if (!permissions.registry) {
@@ -294,7 +294,7 @@ function handleMainMenu(cmd) {
         return;
       }
       stutterPrint("\nACCESSING AGENT REGISTRY...\n");
-      break;
+      return;
 
     case "4":
       if (!permissions.oversight) {
@@ -302,7 +302,7 @@ function handleMainMenu(cmd) {
         return;
       }
       stutterPrint("\nACCESSING MINISTERIAL OVERSIGHT...\n");
-      break;
+      return;
 
     case "5":
       if (!permissions.horus) {
@@ -310,7 +310,7 @@ function handleMainMenu(cmd) {
         return;
       }
       stutterPrint("\nACCESSING PROJECT 'IRON'...\n");
-      break;
+      return;
 
     case "6":
       if (!permissions.eye) {
@@ -318,16 +318,12 @@ function handleMainMenu(cmd) {
         return;
       }
       stutterPrint("\nACCESSING THE EYE...\n");
-      break;
+      return;
 
     default:
       stutterPrint("INVALID SECTOR SELECTION\n");
-      return;
   }
-
-  terminalState = "SECTOR";
 }
-
 function handleFedOps(cmd) {
   switch (cmd) {
 
