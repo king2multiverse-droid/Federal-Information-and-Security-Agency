@@ -58,7 +58,7 @@ body {
 
 <body>
 
-<audio autoplay loop>
+<audio id="bgmusic" loop>
  <source src="LEMMiNO - Blackout (BGM).mp3" type="audio/mpeg">
 </audio>
 
@@ -71,6 +71,12 @@ body {
 
 <textarea id="clipboard" style="position:fixed;opacity:0;height:1px;width:1px;"></textarea>
 
+<script>
+document.addEventListener("keydown", () => {
+  document.getElementById("bgmusic").play();
+}, { once: true });
+</script>
+  
 <script>
   let permissions = {
   council: false,
